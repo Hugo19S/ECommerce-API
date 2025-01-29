@@ -1,0 +1,26 @@
+
+services:
+  ecommerce.service:
+    image: ${DOCKER_REGISTRY-}ecommerceservice
+    restart: 'no'
+    container_name: ecommerce.api
+    build:
+      context: .
+      dockerfile: Ecommerce.Service/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  ecommerce.db:
+    image: postgres:latest
+    restart: 'no'
+    container_name: ecommerce.db
+    environment:
+        POSTGRES_DB: EcommerceDB
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        PGDATA: /var/lib/postgresql/data
+    volumes:
+        - C:\docker\postgres\EcommerceData:/var/lib/postgresql/data
+    ports:
+        - 5432:5432
