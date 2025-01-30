@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class Status
+public class Status
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

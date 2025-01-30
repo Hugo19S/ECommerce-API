@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class PaymentStatusHistory
+public class PaymentStatusHistory
 {
     public Guid Id { get; set; }
     public Guid PaymentId { get; set; }

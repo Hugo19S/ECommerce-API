@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class Payment
+public class Payment
 {
     public Guid Id { get; set; }
     public Guid OrderId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class ProductDiscount
+public class ProductDiscount
 {
     public Guid Id { get; set; }
     public Guid ProductId { get; set; }

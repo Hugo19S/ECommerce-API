@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class OrderItems
+public class OrderItems
 {
     public Guid Id { get; set; }
     public Guid OrderId { get; set; }

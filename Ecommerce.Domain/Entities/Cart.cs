@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class Cart
+public class Cart
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }

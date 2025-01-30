@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class Maker
+public class Maker
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

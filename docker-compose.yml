@@ -17,7 +17,7 @@ services:
     container_name: ecommerce.db
     environment:
         POSTGRES_DB: EcommerceDB
-        POSTGRES_USER: postgres
+        POSTGRES_USER: ecommerce
         POSTGRES_PASSWORD: postgres
         PGDATA: /var/lib/postgresql/data
     volumes:

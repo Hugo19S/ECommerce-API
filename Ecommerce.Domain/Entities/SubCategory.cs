@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Entities;
 
-internal class SubCategory
+public class SubCategory
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }
