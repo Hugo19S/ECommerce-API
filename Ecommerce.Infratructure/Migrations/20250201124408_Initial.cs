@@ -232,6 +232,7 @@ namespace Ecommerce.Infratructure.Migrations
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     PaymentMethodId = table.Column<Guid>(type: "uuid", nullable: false),
                     TotalPaid = table.Column<float>(type: "real", nullable: false),
+                    InstallmentsNumber = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
@@ -317,6 +318,7 @@ namespace Ecommerce.Infratructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductDiscount", x => x.Id);
+                    table.CheckConstraint("CK_Discount_Range", "\"ProductDiscount\".\"Discount\" >= 0 AND \"ProductDiscount\".\"Discount\" <= 1");
                     table.ForeignKey(
                         name: "FK_ProductDiscount_Product_ProductId",
                         column: x => x.ProductId,
@@ -338,8 +340,7 @@ namespace Ecommerce.Infratructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     Uri = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -386,6 +387,7 @@ namespace Ecommerce.Infratructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PaymentId = table.Column<Guid>(type: "uuid", nullable: false),
                     StatusId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<float>(type: "real", nullable: false),
                     Note = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
@@ -452,6 +454,12 @@ namespace Ecommerce.Infratructure.Migrations
                 name: "IX_OrderStatusHistory_StatusId",
                 table: "OrderStatusHistory",
                 column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payment_InstallmentsNumber",
+                table: "Payment",
+                column: "InstallmentsNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_OrderId",

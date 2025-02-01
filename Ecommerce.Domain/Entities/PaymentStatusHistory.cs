@@ -5,6 +5,7 @@ public class PaymentStatusHistory
     public Guid Id { get; set; }
     public Guid PaymentId { get; set; }
     public Guid StatusId { get; set; }
+    public float Value { get; set; }
     public string? Note { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public Payment Payment { get; set; }

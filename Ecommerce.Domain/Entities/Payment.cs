@@ -6,6 +6,7 @@ public class Payment
     public Guid OrderId { get; set; }
     public Guid PaymentMethodId { get; set; }
     public float TotalPaid { get; set; }
+    public int InstallmentsNumber { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public Order Order { get; set; }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ecommerce.Infratructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20250130204123_Initial")]
+    [Migration("20250201124408_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -185,6 +185,9 @@ namespace Ecommerce.Infratructure.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("InstallmentsNumber")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
@@ -198,6 +201,9 @@ namespace Ecommerce.Infratructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstallmentsNumber")
+                        .IsUnique();
 
                     b.HasIndex("OrderId");
 
@@ -247,6 +253,9 @@ namespace Ecommerce.Infratructure.Migrations
 
                     b.Property<Guid>("StatusId")
                         .HasColumnType("uuid");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -340,7 +349,10 @@ namespace Ecommerce.Infratructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductDiscount");
+                    b.ToTable("ProductDiscount", t =>
+                        {
+                            t.HasCheckConstraint("CK_Discount_Range", "\"ProductDiscount\".\"Discount\" >= 0 AND \"ProductDiscount\".\"Discount\" <= 1");
+                        });
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductImage", b =>
@@ -354,9 +366,6 @@ namespace Ecommerce.Infratructure.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Uri")
                         .IsRequired()

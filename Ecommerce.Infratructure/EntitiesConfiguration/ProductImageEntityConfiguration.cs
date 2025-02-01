@@ -10,6 +10,5 @@ public class ProductImageEntityConfiguration : IEntityTypeConfiguration<ProductI
     {
         builder.Property(x => x.Uri).IsRequired();
         builder.Property(c => c.CreatedAt).IsRequired();
-        builder.Property(c => c.UpdatedAt).IsRequired(false);
     }
 }
