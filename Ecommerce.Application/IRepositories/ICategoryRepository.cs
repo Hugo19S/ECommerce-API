@@ -3,7 +3,7 @@ using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Application.IRepositories;
 
-internal interface ICategoryRepository
+public interface ICategoryRepository
 {
     Task<ErrorOr<Created>> AddCategoty(string name,
                                        string? desciption,

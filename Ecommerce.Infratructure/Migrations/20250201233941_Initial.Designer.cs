@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ecommerce.Infratructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20250201124408_Initial")]
+    [Migration("20250201233941_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -515,8 +515,8 @@ namespace Ecommerce.Infratructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PhoneNumber")
-                        .HasColumnType("integer");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
 
                     b.Property<string>("Role")
                         .IsRequired()

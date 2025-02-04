@@ -3,7 +3,7 @@ using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Application.IRepositories;
 
-internal interface IPaymentMethodRepository
+public interface IPaymentMethodRepository
 {
     Task<ErrorOr<Created>> AddPaymentMethod(string name, CancellationToken cancellationToken);
     Task<ErrorOr<PaymentMethod>> GetPaymentMethodById(Guid paymentMethodId, CancellationToken cancellationToken);

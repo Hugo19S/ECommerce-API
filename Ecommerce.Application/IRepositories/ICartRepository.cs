@@ -3,7 +3,7 @@ using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Application.IRepositories;
 
-internal interface ICartRepository
+public interface ICartRepository
 {
     Task<ErrorOr<Created>> AddCart(Guid userId, Guid productId, int quantity, CancellationToken cancellationToken);
     Task<List<Cart>> GetAllCarts(Guid userId, CancellationToken cancellationToken);

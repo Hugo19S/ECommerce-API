@@ -3,7 +3,7 @@ using ErrorOr;
 
 namespace Ecommerce.Application.IRepositories;
 
-internal interface IProductPriceRepository
+public interface IProductPriceRepository
 {
     Task<ErrorOr<Created>> AddProductPrice(Guid productId, Guid createdBy, float price, CancellationToken cancellationToken);
     Task<ErrorOr<ProductPrice>> GetLatestProductPrice(Guid productId, CancellationToken cancellationToken);

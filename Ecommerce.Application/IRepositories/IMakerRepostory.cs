@@ -3,7 +3,7 @@ using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Application.IRepositories;
 
-interface IMakerRepostory
+public interface IMakerRepostory
 {
     Task<ErrorOr<Created>> AddMaker(string name, CancellationToken cancellationToken);
     Task<ErrorOr<Maker>> GetMakerById(Guid makerId, CancellationToken cancellationToken);

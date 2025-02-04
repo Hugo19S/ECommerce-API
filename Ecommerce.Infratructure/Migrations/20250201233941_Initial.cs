@@ -90,7 +90,7 @@ namespace Ecommerce.Infratructure.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "integer", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     Address = table.Column<string>(type: "text", nullable: false),
                     AlternativeAddress = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),

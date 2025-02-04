@@ -3,7 +3,7 @@ using ErrorOr;
 
 namespace Ecommerce.Application.IRepositories;
 
-internal interface IPaymentRepository
+public interface IPaymentRepository
 {
     Task<ErrorOr<Created>> AddPayment(Guid orderId,
                                       Guid paymentMethodId,

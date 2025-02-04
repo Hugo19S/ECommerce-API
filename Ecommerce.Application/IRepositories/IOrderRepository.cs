@@ -3,7 +3,7 @@ using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Application.IRepositories;
 
-internal interface IOrderRepository
+public interface IOrderRepository
 {
     Task<ErrorOr<Created>> AddOrder(Guid userId, float total, CancellationToken cancellationToken);
     Task<ErrorOr<Order>> GetOrderById(Guid orderId, CancellationToken cancellationToken);
