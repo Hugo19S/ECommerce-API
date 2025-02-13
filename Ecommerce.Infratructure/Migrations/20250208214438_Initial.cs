@@ -151,7 +151,7 @@ namespace Ecommerce.Infratructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SubCategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     MakerId = table.Column<Guid>(type: "uuid", nullable: false),
                     SellerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
@@ -166,12 +166,6 @@ namespace Ecommerce.Infratructure.Migrations
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Product_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Product_Maker_MakerId",
                         column: x => x.MakerId,
                         principalTable: "Maker",
@@ -181,6 +175,12 @@ namespace Ecommerce.Infratructure.Migrations
                         name: "FK_Product_Seller_SellerId",
                         column: x => x.SellerId,
                         principalTable: "Seller",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Product_SubCategory_SubCategoryId",
+                        column: x => x.SubCategoryId,
+                        principalTable: "SubCategory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -494,11 +494,6 @@ namespace Ecommerce.Infratructure.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CategoryId",
-                table: "Product",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Product_CreatedBy",
                 table: "Product",
                 column: "CreatedBy");
@@ -512,6 +507,11 @@ namespace Ecommerce.Infratructure.Migrations
                 name: "IX_Product_SellerId",
                 table: "Product",
                 column: "SellerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_SubCategoryId",
+                table: "Product",
+                column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_UpdatedBy",
@@ -546,12 +546,6 @@ namespace Ecommerce.Infratructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Seller_Name",
                 table: "Seller",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Status_Name",
-                table: "Status",
                 column: "Name",
                 unique: true);
 
@@ -598,9 +592,6 @@ namespace Ecommerce.Infratructure.Migrations
                 name: "ProductPrice");
 
             migrationBuilder.DropTable(
-                name: "SubCategory");
-
-            migrationBuilder.DropTable(
                 name: "Payment");
 
             migrationBuilder.DropTable(
@@ -616,16 +607,19 @@ namespace Ecommerce.Infratructure.Migrations
                 name: "PaymentMethod");
 
             migrationBuilder.DropTable(
-                name: "Category");
-
-            migrationBuilder.DropTable(
                 name: "Maker");
 
             migrationBuilder.DropTable(
                 name: "Seller");
 
             migrationBuilder.DropTable(
+                name: "SubCategory");
+
+            migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }

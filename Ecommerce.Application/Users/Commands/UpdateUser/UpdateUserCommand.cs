@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Ecommerce.Application.Users.Commands.UpdateUser;
 
-public record UpdateUserCommand (Guid UserId,
+public record UpdateUserCommand(Guid UserId,
                                  string Email,
                                  string PhoneNumber,
                                  string Adrress) : IRequest<ErrorOr<Updated>>;
@@ -16,7 +16,7 @@ public class UpdateUserCommandHandler(IUserRepository userRepository)
     {
         var userToUpdate = await userRepository.GetUserById(request.UserId, cancellationToken);
 
-        if (userToUpdate == null) 
+        if (userToUpdate == null)
         {
             return Error.NotFound("User.NotFound", $"User with Id {request.UserId} not found!");
         }

@@ -8,7 +8,7 @@ public class StatusEntityConfiguration : IEntityTypeConfiguration<Status>
 {
     public void Configure(EntityTypeBuilder<Status> builder)
     {
-        builder.HasIndex(x => x.Name).IsUnique();
+        builder.Property(x => x.Name).IsRequired();
         builder.Property(c => c.Type).IsRequired();
         builder.Property(c => c.Description).IsRequired(false);
     }

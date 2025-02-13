@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
-using System.IO;
+using Ecommerce.Infratructure.Seeders;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Ecommerce.Application.Common;
 
 namespace Ecommerce.Infratructure;
 
-public class ECommerceDbContext : DbContext
+public class ECommerceDbContext : DbContext, IUnitOfWork
 {
     public ECommerceDbContext() { }
     public ECommerceDbContext(DbContextOptions<ECommerceDbContext> option) : base(option) { }
@@ -31,6 +33,8 @@ public class ECommerceDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+
         if (!optionsBuilder.IsConfigured)
         {
             var basePath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../Ecommerce.Service"));
@@ -43,10 +47,19 @@ public class ECommerceDbContext : DbContext
 
             optionsBuilder.UseNpgsql(connectionString);
         }
+        base.OnConfiguring(optionsBuilder);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        var categoryList = CategorySeeder.Seed(modelBuilder);
+        SubCategorySeerder.Seed(modelBuilder, categoryList);
+        MakerSeeder.Seed(modelBuilder);
+        PaymentMethodSeeder.Seed(modelBuilder);
+        SellerSeeder.Seed(modelBuilder);
+        StatusSeeder.Seed(modelBuilder);
+        UserSeeder.Seed(modelBuilder);
+
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }

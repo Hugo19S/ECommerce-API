@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Infratructure.Repositories;
 
 //using Ecommerce.Infratructure.Migrations.Repositories;
@@ -14,7 +15,7 @@ public static class DependencyInjections
                                                                  IConfiguration configuration)
     {
         services.AddDbContext<ECommerceDbContext>(option => 
-        option.UseNpgsql(configuration.GetConnectionString("ECommerce1")));
+            option.UseNpgsql(configuration.GetConnectionString("ECommerce1")));
 
         /*services.AddScoped<ICartRepository, >();
         services.AddScoped<ICategoryRepository, >();
@@ -27,10 +28,11 @@ public static class DependencyInjections
         services.AddScoped<IProductImageRepository, >();
         services.AddScoped<IProductPriceRepository, >();
         services.AddScoped<IProductRepository, >();
-        services.AddScoped<ISellerRepository, >();
-        services.AddScoped<IStatusRepository, >();
-        services.AddScoped<ISubCategoryRepository, >();*/
+        services.AddScoped<ISellerRepository, >();*/
+        services.AddScoped<IStatusRepository, StatusRepository>();
+        /*services.AddScoped<ISubCategoryRepository, >();*/
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork>(s => s.GetRequiredService<ECommerceDbContext>());
         return services;
     }
 }

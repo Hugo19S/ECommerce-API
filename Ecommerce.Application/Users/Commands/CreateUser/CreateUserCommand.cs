@@ -3,9 +3,9 @@ using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
 
-namespace Ecommerce.Application.Users.Commands.AddUser;
+namespace Ecommerce.Application.Users.Commands.CreateUser;
 
-public record AddUserCommand(string FirstName, 
+public record CreateUserCommand(string FirstName,
                              string LastName,
                              string Email,
                              string Password,
@@ -13,9 +13,9 @@ public record AddUserCommand(string FirstName,
                              string Address,
                              string Role) : IRequest<ErrorOr<Created>>;
 
-public class AddUserCommandHandler(IUserRepository userRepository) : IRequestHandler<AddUserCommand, ErrorOr<Created>>
+public class CreateUserCommandHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, ErrorOr<Created>>
 {
-    public async Task<ErrorOr<Created>> Handle(AddUserCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Created>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetUserByEmail(request.Email, cancellationToken);
 
@@ -24,7 +24,8 @@ public class AddUserCommandHandler(IUserRepository userRepository) : IRequestHan
             return Error.Conflict("User.Conflict", "There's already a user with the same e-mail address!");
         }
 
-        var createUser = new User {
+        var createUser = new User
+        {
             Id = Guid.NewGuid(),
             FirstName = request.FirstName,
             LastName = request.LastName,

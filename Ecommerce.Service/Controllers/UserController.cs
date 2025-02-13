@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Ecommerce.Application.Users.Commands.AddUser;
+using Ecommerce.Application.Users.Commands.CreateUser;
 using Ecommerce.Application.Users.Commands.DeleteUser;
 using Ecommerce.Application.Users.Commands.UpdateUser;
 using Ecommerce.Application.Users.Queries.GetUser;
@@ -17,7 +17,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest createUser,
                                             CancellationToken cancellationToken) 
     {
-        var userOr = await sender.Send(new AddUserCommand(createUser.FirstName,
+        var userOr = await sender.Send(new CreateUserCommand(createUser.FirstName,
                                                         createUser.LastName,
                                                         createUser.Email,
                                                         createUser.Password,

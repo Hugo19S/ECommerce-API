@@ -12,7 +12,8 @@ public class DeleteUserCommandHandler(IUserRepository userRepository) : IRequest
     {
         var userExist = await userRepository.GetUserById(request.UserId, cancellationToken);
 
-        if (userExist == null) {
+        if (userExist == null)
+        {
             return Error.NotFound("User.NotFound", $"User with Id {request.UserId} not found!");
         }
 

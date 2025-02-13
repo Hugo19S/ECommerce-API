@@ -1,9 +1,7 @@
 ﻿using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace Ecommerce.Infratructure.Repositories;
 

@@ -1,5 +1,5 @@
 ﻿namespace Ecommerce.Application.Users.Queries.GetUser;
 
-public class GetUsersQueryValidator
+public class GetUserQueryValidator
 {
 }

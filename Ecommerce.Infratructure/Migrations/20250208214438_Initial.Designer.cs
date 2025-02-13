@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ecommerce.Infratructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20250201233941_Initial")]
+    [Migration("20250208214438_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -272,9 +272,6 @@ namespace Ecommerce.Infratructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -304,6 +301,9 @@ namespace Ecommerce.Infratructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("SubCategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -312,13 +312,13 @@ namespace Ecommerce.Infratructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("MakerId");
 
                     b.HasIndex("SellerId");
+
+                    b.HasIndex("SubCategoryId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -444,9 +444,6 @@ namespace Ecommerce.Infratructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Status");
                 });
@@ -641,12 +638,6 @@ namespace Ecommerce.Infratructure.Migrations
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("Ecommerce.Domain.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Ecommerce.Domain.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatedBy")
@@ -665,19 +656,25 @@ namespace Ecommerce.Infratructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Ecommerce.Domain.Entities.SubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Ecommerce.Domain.Entities.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-
                     b.Navigation("Creator");
 
                     b.Navigation("Maker");
 
                     b.Navigation("Seller");
+
+                    b.Navigation("SubCategory");
 
                     b.Navigation("Updater");
                 });
