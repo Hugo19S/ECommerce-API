@@ -6,9 +6,7 @@ using Ecommerce.Application.Statuses.Queries.GetStatus;
 using Ecommerce.Application.Statuses.Queries.GetStatuses;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Service.Contracts;
-using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 

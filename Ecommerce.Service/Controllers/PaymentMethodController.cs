@@ -1,0 +1,58 @@
+﻿using Ecommerce.Application.PaymentMethods.Commands.CreatePaymentMethod;
+using Ecommerce.Application.PaymentMethods.Commands.DeletePaymentMethod;
+using Ecommerce.Application.PaymentMethods.Commands.UpdatePaymentMethod;
+using Ecommerce.Application.PaymentMethods.Queries.GetPaymentMethod;
+using Ecommerce.Application.PaymentMethods.Queries.GetPaymentMethods;
+using Ecommerce.Service.Contracts;
+using ErrorOr;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Ecommerce.Service.Controllers;
+
+[Route("api/[controller]")]
+public class PaymentMethodController(ISender sender) : ApiController
+{
+    [HttpPost]
+    public Task<ActionResult> CreatePaymentMethod([FromBody] CreatePaymentMethodRequest paymentMethodRequest,
+                                                  CancellationToken cancellationToken)
+    {
+        var createdPaymentMethodOr = sender.Send(new CreatePaymentMethodCommand(paymentMethodRequest.Name), cancellationToken);
+
+        return createdPaymentMethodOr.Match(v => Ok(v), Problem);
+    }
+
+    [HttpGet("{paymentMethodId:guid}")]
+    public async Task<ActionResult> GetPaymentMethod(Guid paymentMethodId, CancellationToken cancellationToken)
+    {
+        var paymentMethodOr = await sender.Send(new GetPaymentMethodQuery(paymentMethodId), cancellationToken);
+
+        return paymentMethodOr.Match(Ok, Problem);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> GetPaymentMethods(CancellationToken cancellationToken)
+    {
+        var paymentMethodsOr = await sender.Send(new GetPaymentMethodsQuery(), cancellationToken);
+
+        return paymentMethodsOr.Match(Ok, Problem);
+    }
+
+    [HttpDelete("{paymentMethodId:guid}")]
+    public async Task<ActionResult> DeletePaymentMethod(Guid paymentMethodId, CancellationToken cancellationToken)
+    {
+        var deletedPaymentMethodOr = await sender.Send(new DeletePaymentMethodCommand(paymentMethodId), cancellationToken);
+
+        return deletedPaymentMethodOr.Match(v => Ok(v), Problem);
+    }
+
+    [HttpPut("{paymentMethodId:guid}")]
+    public Task<ActionResult> UpdatePaymentMethod(Guid paymentMethodId,
+                                                  [FromBody] UpdatePaymentMethodRequest paymentMethodRequest,
+                                                  CancellationToken cancellationToken)
+    {
+        var updatedPaymentMethodOr = sender.Send(new UpdatePaymentMethodCommand(paymentMethodId,
+                                                                                paymentMethodRequest.Name), cancellationToken);
+        return updatedPaymentMethodOr.Match(v => Ok(v), Problem);
+    }
+}
