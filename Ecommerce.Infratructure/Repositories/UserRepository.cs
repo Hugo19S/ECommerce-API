@@ -13,9 +13,9 @@ public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
         await dbContext.SaveChangesAsync(cancellationToken);
         return new Created();
     }
-    public Task<List<User>> GetAllUser(CancellationToken cancellationToken)
+    public async Task<List<User>> GetAllUser(CancellationToken cancellationToken)
     {
-        return dbContext.User
+        return await dbContext.User
             .OrderBy(x => x.FirstName)
             .ThenBy(x => x.LastName)
             .ToListAsync(cancellationToken);

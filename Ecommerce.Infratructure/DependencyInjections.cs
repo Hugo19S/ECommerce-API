@@ -17,20 +17,20 @@ public static class DependencyInjections
         services.AddDbContext<ECommerceDbContext>(option => 
             option.UseNpgsql(configuration.GetConnectionString("ECommerce1")));
 
-        /*services.AddScoped<ICartRepository, >();
-        services.AddScoped<ICategoryRepository, >();
-        services.AddScoped<IMakerRepostory, >();
-        services.AddScoped<IOrderItemsRepository, >();
+        //services.AddScoped<ICartRepository, >();
+        //services.AddScoped<ICategoryRepository, >();
+        services.AddScoped<IMakerRepostory, MakerRepository>();
+        /*services.AddScoped<IOrderItemsRepository, >();
         services.AddScoped<IOrderRepository, >();*/
         services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
-        /*services.AddScoped<IPaymentRepository, >();
-        services.AddScoped<IProductDiscountRepository, >();
-        services.AddScoped<IProductImageRepository, >();
-        services.AddScoped<IProductPriceRepository, >();
-        services.AddScoped<IProductRepository, >();
-        services.AddScoped<ISellerRepository, >();*/
+        //services.AddScoped<IPaymentRepository, >();
+        //services.AddScoped<IProductDiscountRepository, >();
+        //services.AddScoped<IProductImageRepository, >();
+        //services.AddScoped<IProductPriceRepository, >();
+        //services.AddScoped<IProductRepository, >();
+        //services.AddScoped<ISellerRepository, >();
         services.AddScoped<IStatusRepository, StatusRepository>();
-        /*services.AddScoped<ISubCategoryRepository, >();*/
+        //services.AddScoped<ISubCategoryRepository, >();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork>(s => s.GetRequiredService<ECommerceDbContext>());
         return services;
