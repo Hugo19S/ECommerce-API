@@ -21,7 +21,8 @@ namespace Ecommerce.Service.Controllers
         {
             var categoriesOr = await sender.Send(new GetCategoriesQuery(), cancellationToken);
 
-            return categoriesOr.Match(Ok, Problem);
+            return categoriesOr.Match(v => Ok(mapper.Map<List<CategoryResponse>>(v)),
+                                      Problem);
         }
         
         [HttpGet("{categoryId:guid}")]
@@ -29,7 +30,8 @@ namespace Ecommerce.Service.Controllers
         {
             var categoryOr = await sender.Send(new GetCategoryQuery(categoryId), cancellationToken);
 
-            return categoryOr.Match(Ok, Problem);
+            return categoryOr.Match(v => Ok(mapper.Map<CategoryResponse>(v)),
+                                    Problem);
         }
         
         [HttpPost]

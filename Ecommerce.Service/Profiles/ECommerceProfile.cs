@@ -8,6 +8,8 @@ namespace Ecommerce.Service.Profiles
     {
         public ECommerceProfile()
         {
+            CreateMap<Category, CategoryResponse>();
+            CreateMap<Category, List<CategoryResponse>>();
             CreateMap<Maker, GetMakerResponse>();
             CreateMap<Maker, List<GetMakerResponse>>();
             CreateMap<User, UserResponse>();
