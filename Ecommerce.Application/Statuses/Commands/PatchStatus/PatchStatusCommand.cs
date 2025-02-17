@@ -14,6 +14,11 @@ public class PatchStatusCommandHandler(IStatusRepository statusRepository, IUnit
 {
     public async Task<ErrorOr<Updated>> Handle(PatchStatusCommand request, CancellationToken cancellationToken)
     {
+        if (request.JsonPatch.Operations.Any(op => op.OperationType is OperationType.Move or OperationType.Copy))
+        {
+            return Error.Unauthorized("Operation.Unauthorized", $"Moving and copying operations are not allowed!");
+        }
+
         if (request.JsonPatch is null || request.JsonPatch.Operations.Count == 0)
         {
             return Error.NotFound("JSonPatch.NotFound", $"JSonPatch should not be empty!");
@@ -24,11 +29,6 @@ public class PatchStatusCommandHandler(IStatusRepository statusRepository, IUnit
         if (status == null)
         {
             return Error.NotFound("Status.NotFound", $"Status with Id {request.StatusId} not found!");
-        }
-
-        if (request.JsonPatch.Operations.Any(op => op.OperationType is OperationType.Move or OperationType.Copy))
-        {
-            return Error.Unauthorized("Operation.Unauthorized", $"Moving and copying operations are not allowed!");
         }
 
         var nameOperation = request.JsonPatch.Operations.FirstOrDefault(op =>
