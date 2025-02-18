@@ -45,7 +45,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     {
         var users = await sender.Send(new GetUsersQuery(), cancellationToken);
         return users.Match(
-            Ok,
+            v => Ok(mapper.Map<List<UserResponse>>(v)),
             Problem);
 
     }

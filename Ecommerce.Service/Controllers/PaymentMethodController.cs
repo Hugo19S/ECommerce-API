@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.PaymentMethods.Commands.CreatePaymentMethod;
+﻿using AutoMapper;
+using Ecommerce.Application.PaymentMethods.Commands.CreatePaymentMethod;
 using Ecommerce.Application.PaymentMethods.Commands.DeletePaymentMethod;
 using Ecommerce.Application.PaymentMethods.Commands.UpdatePaymentMethod;
 using Ecommerce.Application.PaymentMethods.Queries.GetPaymentMethod;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
-public class PaymentMethodController(ISender sender) : ApiController
+public class PaymentMethodController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpPost]
     public Task<ActionResult> CreatePaymentMethod([FromBody] CreatePaymentMethodRequest paymentMethodRequest,
@@ -27,7 +28,9 @@ public class PaymentMethodController(ISender sender) : ApiController
     {
         var paymentMethodOr = await sender.Send(new GetPaymentMethodQuery(paymentMethodId), cancellationToken);
 
-        return paymentMethodOr.Match(Ok, Problem);
+        return paymentMethodOr.Match(
+            v => Ok(mapper.Map<PaymentMethodResponse>(v)),
+            Problem);
     }
 
     [HttpGet]
@@ -35,7 +38,9 @@ public class PaymentMethodController(ISender sender) : ApiController
     {
         var paymentMethodsOr = await sender.Send(new GetPaymentMethodsQuery(), cancellationToken);
 
-        return paymentMethodsOr.Match(Ok, Problem);
+        return paymentMethodsOr.Match(
+            v => Ok(mapper.Map<List<PaymentMethodResponse>>(v)), 
+            Problem);
     }
 
     [HttpDelete("{paymentMethodId:guid}")]

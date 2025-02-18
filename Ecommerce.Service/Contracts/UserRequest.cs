@@ -29,7 +29,5 @@
         public string? PhoneNumber { get; set; }
         public string Address { get; set; }
         public string? AlternativeAddress { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset? UpdatedAt { get; set; }
     }
 }
