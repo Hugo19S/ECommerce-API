@@ -18,7 +18,7 @@ namespace Ecommerce.Service.Controllers
         {
             var sellersOr = await sender.Send(new GetSellersCommand(), cancellationToken);
 
-            return sellersOr.Match(Ok, Problem);
+            return sellersOr.Match(v => Ok(mapper.Map<List<SellerResponse>>(v)), Problem);
         }
         
         [HttpGet("{sellerId:guid}")]
@@ -26,7 +26,7 @@ namespace Ecommerce.Service.Controllers
         {
             var sellerOr = await sender.Send(new GetSellerCommand(sellerId), cancellationToken);
 
-            return sellerOr.Match(Ok, Problem);
+            return sellerOr.Match(v => Ok(mapper.Map<SellerResponse>(v)), Problem);
         }
 
         [HttpPost]

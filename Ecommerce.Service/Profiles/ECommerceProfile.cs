@@ -16,14 +16,18 @@ namespace Ecommerce.Service.Profiles
             /* Maker Profile */
             CreateMap<Maker, GetMakerResponse>();
             CreateMap<Maker, List<GetMakerResponse>>();
+            
+            /* PaymentMethod Profile */
+            CreateMap<PaymentMethod, PaymentMethodResponse>();
+            CreateMap<PaymentMethod, List<PaymentMethodResponse>>();
+
+            /* Seller Profile */
+            CreateMap<Seller, SellerResponse>();
+            CreateMap<Seller, List<SellerResponse>>();
 
             /* User Profile */
             CreateMap<User, UserResponse>();
             CreateMap<User, List<UserResponse>>();
-
-            /* PaymentMethod Profile */
-            CreateMap<PaymentMethod, PaymentMethodResponse>();
-            CreateMap<PaymentMethod, List<PaymentMethodResponse>>();
         }
     }
 }
