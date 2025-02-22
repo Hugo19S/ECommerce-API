@@ -24,6 +24,10 @@ namespace Ecommerce.Service.Profiles
             /* Seller Profile */
             CreateMap<Seller, SellerResponse>();
             CreateMap<Seller, List<SellerResponse>>();
+            
+            /* Seller Profile */
+            CreateMap<SubCategory, SubCategoryResponse>();
+            CreateMap<SubCategory, List<SubCategoryResponse>>();
 
             /* User Profile */
             CreateMap<User, UserResponse>();

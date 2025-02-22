@@ -30,7 +30,7 @@ public static class DependencyInjections
         //services.AddScoped<IProductRepository, >();
         services.AddScoped<ISellerRepository, SellerRespository>();
         services.AddScoped<IStatusRepository, StatusRepository>();
-        //services.AddScoped<ISubCategoryRepository, >();
+        services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork>(s => s.GetRequiredService<ECommerceDbContext>());
         return services;
