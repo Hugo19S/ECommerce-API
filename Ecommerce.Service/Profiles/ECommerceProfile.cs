@@ -11,27 +11,25 @@ namespace Ecommerce.Service.Profiles
         {
             /* Category Profile */
             CreateMap<Category, CategoryResponse>();
-            CreateMap<Category, List<CategoryResponse>>();
 
             /* Maker Profile */
             CreateMap<Maker, GetMakerResponse>();
-            CreateMap<Maker, List<GetMakerResponse>>();
+
+            /* Order Profile */
+            CreateMap<Order, OrderResponse>();
+            CreateMap<OrderStatusHistory, OrderHistoryResponse>();
             
             /* PaymentMethod Profile */
             CreateMap<PaymentMethod, PaymentMethodResponse>();
-            CreateMap<PaymentMethod, List<PaymentMethodResponse>>();
 
             /* Seller Profile */
             CreateMap<Seller, SellerResponse>();
-            CreateMap<Seller, List<SellerResponse>>();
-            
-            /* Seller Profile */
+
+            /* SubCategory Profile */
             CreateMap<SubCategory, SubCategoryResponse>();
-            CreateMap<SubCategory, List<SubCategoryResponse>>();
 
             /* User Profile */
             CreateMap<User, UserResponse>();
-            CreateMap<User, List<UserResponse>>();
         }
     }
 }

@@ -1,14 +1,21 @@
-﻿using ErrorOr;
-using Ecommerce.Domain.Entities;
+﻿using Ecommerce.Domain.Entities;
+using ErrorOr;
 
 namespace Ecommerce.Application.IRepositories;
 
 public interface IOrderRepository
 {
-    Task<ErrorOr<Created>> AddOrder(Guid userId, float total, CancellationToken cancellationToken);
-    Task<ErrorOr<Order>> GetOrderById(Guid orderId, CancellationToken cancellationToken);
-    Task<List<Order>> GetAllOrder(Guid userId, CancellationToken cancellationToken);
-    Task<List<Order>> GetOrderHistory(Guid orderId, CancellationToken cancellationToken);
-    Task<List<Updated>> UpdateOrder(Guid orderId, Guid statusId, string? note, CancellationToken cancellationToken);
-    Task<ErrorOr<Deleted>> DeleteOrder(Guid orderId, CancellationToken cancellationToken);
+    // Order
+    Task AddOrder(Order order, CancellationToken cancellationToken);
+    Task<Order?> GetOrderById(Guid orderId, CancellationToken cancellationToken);
+    Task<List<Order>> GetUserOrders(Guid userId, CancellationToken cancellationToken);
+    Task UpdateOrder(Guid orderId, float value, CancellationToken cancellationToken);
+
+    // Order History
+    Task AddOrderHistory(OrderStatusHistory orderStatusHistory, CancellationToken cancellationToken);
+    Task<List<OrderStatusHistory>> GetOrderHistory(Guid orderId, CancellationToken cancellationToken);
+
+    // Order Items
+    Task AddOrderItems(OrderItems items, CancellationToken cancellationToken);
+    Task<List<OrderItems>> GetOrderItems(Guid orderId, CancellationToken cancellationToken);
 }
