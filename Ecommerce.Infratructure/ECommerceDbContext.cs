@@ -30,6 +30,7 @@ public class ECommerceDbContext : DbContext, IUnitOfWork
     public DbSet<Status> Status { get; set; }
     public DbSet<SubCategory> SubCategory { get; set; }
     public DbSet<User> User { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -58,6 +59,7 @@ public class ECommerceDbContext : DbContext, IUnitOfWork
         PaymentMethodSeeder.Seed(modelBuilder);
         SellerSeeder.Seed(modelBuilder);
         StatusSeeder.Seed(modelBuilder);
+        UserRoleSeeder.Seed(modelBuilder);
         UserSeeder.Seed(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

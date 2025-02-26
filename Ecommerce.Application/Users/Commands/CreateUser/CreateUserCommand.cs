@@ -11,7 +11,7 @@ public record CreateUserCommand(string FirstName,
                              string Password,
                              string? PhoneNumber,
                              string Address,
-                             string Role) : IRequest<ErrorOr<Created>>;
+                             Guid UserRoleId) : IRequest<ErrorOr<Created>>;
 
 public class CreateUserCommandHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, ErrorOr<Created>>
 {
@@ -33,7 +33,7 @@ public class CreateUserCommandHandler(IUserRepository userRepository) : IRequest
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
-            Role = request.Role,
+            UserRoleId = request.UserRoleId,
             CreatedAt = DateTime.UtcNow
         };
         await userRepository.AddUser(createUser, cancellationToken);

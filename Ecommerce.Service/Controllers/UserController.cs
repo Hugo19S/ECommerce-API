@@ -13,9 +13,10 @@ namespace Ecommerce.Service.Controllers;
 [Route("api/[controller]")]
 public class UserController(ISender sender, IMapper mapper) : ApiController
 {
-    [HttpPost]
-    public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest createUser,
-                                            CancellationToken cancellationToken) 
+    [HttpPost("{userRoleId:guid}")]
+    public async Task<ActionResult> CreateUser(Guid userRoleId,
+                                               [FromBody] CreateUserRequest createUser,
+                                               CancellationToken cancellationToken) 
     {
         var userOr = await sender.Send(new CreateUserCommand(createUser.FirstName,
                                                         createUser.LastName,
@@ -23,7 +24,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
                                                         createUser.Password,
                                                         createUser.PhoneNumber,
                                                         createUser.Address,
-                                                        createUser.Role), cancellationToken);
+                                                        userRoleId), cancellationToken);
 
         return userOr.Match(
             v => Created("", v), 
