@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -15,9 +16,7 @@ public class GetPaymentMethodQueryHandler(IPaymentMethodRepository repository)
         var paymentMethod = await repository.GetPaymentMethodById(request.PaymentMethodId, cancellationToken);
 
         if (paymentMethod == null)
-        {
-            return Error.NotFound("PaymentMethod.NotFound", $"PaymentMethod with id {request.PaymentMethodId} not found.");
-        }
+            return DomainErrors.NotFound("PaymentMethod", request.PaymentMethodId);
 
         return paymentMethod;
     }

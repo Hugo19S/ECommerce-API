@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -15,10 +16,8 @@ public class CreateMakerCommandHandler(IMakerRepostory repostory, IUnitOfWork un
     {
         var makerExist = await repostory.GetMakerByName(request.Name, cancellationToken);
 
-        if (makerExist != null) 
-        {
-            return Error.Conflict("Maker.Conflict", "There's already a maker with the same name!");
-        }
+        if (makerExist != null)
+            return DomainErrors.Conflict("Maker");
 
         var newMaker = new Maker
         {

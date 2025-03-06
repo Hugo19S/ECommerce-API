@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -15,16 +16,12 @@ public class UpdateMakerCommandHandler(IMakerRepostory repostory, IUnitOfWork un
         var makerExist = await repostory.GetMakerById(request.MakerId, cancellationToken);
 
         if (makerExist == null) 
-        {
-            return Error.NotFound("Maker.NotFound", $"Maker with id {request.MakerId} not found.");
-        }
+            return DomainErrors.NotFound("Maker", request.MakerId);
         
         var makerWithSameName = await repostory.GetMakerByName(request.Name, cancellationToken);
 
-        if (makerWithSameName != null) 
-        {
-            return Error.Conflict("Maker.Conflict", "There's already a maker with the same name!");
-        }
+        if (makerWithSameName != null)
+            return DomainErrors.Conflict("Maker");
 
         await repostory.UpdateMaker(request.MakerId, request.Name, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

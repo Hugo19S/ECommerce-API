@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -16,9 +17,7 @@ public class CreateCategoryCommandHandler(ICategoryRepository repository, IUnitO
         var categoryExist = await repository.GetCategoryByName(request.Name, cancellationToken);
 
         if (categoryExist != null)
-        {
-            return Error.Conflict("Category.Conflict", "There's already a category with the same name!");
-        }
+            return DomainErrors.Conflict("Category");
 
         var newCategory = new Domain.Entities.Category
         {

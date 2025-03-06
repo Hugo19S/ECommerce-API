@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -13,10 +14,8 @@ namespace Ecommerce.Application.Statuses.Commands.DeleteStatus
         {
             var statusExist = await statusRepository.GetStatusById(request.StatusId, cancellationToken);
 
-            if (statusExist == null) 
-            {
-                return Error.NotFound("Status.NotFound", $"Status with Id {request.StatusId} not found!");
-            }
+            if (statusExist == null)
+                return DomainErrors.NotFound("Status", request.StatusId);
 
             await statusRepository.DeleteStatus(request.StatusId, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);

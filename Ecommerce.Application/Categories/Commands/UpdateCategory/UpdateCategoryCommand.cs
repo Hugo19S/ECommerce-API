@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -16,16 +17,12 @@ public class UpdateCategoryCommandHandler(ICategoryRepository repository, IUnitO
         var categoryWithSameName = await repository.GetCategoryByName(request.Name, cancellationToken);
 
         if (categoryWithSameName != null)
-        {
-            return Error.Conflict("Category.Conflict", "There's already a category with the same name!");
-        }
+            return DomainErrors.Conflict("Category");
 
         var categoryExist = await repository.GetCategoryById(request.CategoryId, cancellationToken);
 
         if (categoryExist == null)
-        {
-            return Error.NotFound("Category.NotFound", $"Category with id {request.CategoryId} not found.");
-        }
+            return DomainErrors.NotFound("Category", request.CategoryId);
 
         await repository.UpdateCategory(request.CategoryId, request.Name, request.Description, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

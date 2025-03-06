@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -14,10 +15,8 @@ public class UpdateStatusCommandHandler(IStatusRepository repository, IUnitOfWor
     {
         var statusExist = await repository.GetStatusById(request.StatusId, cancellationToken);
 
-        if (statusExist == null) 
-        {
-            return Error.NotFound("Status.NotFound", $"Status with Id {request.StatusId} not found!");
-        }
+        if (statusExist == null)
+            return DomainErrors.NotFound("Status", request.StatusId);
 
         await repository.UpdateStatus(request.StatusId ,request.Name ,request.Type ,request.Description, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

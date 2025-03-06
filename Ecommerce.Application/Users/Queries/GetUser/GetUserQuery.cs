@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -14,9 +15,7 @@ public class GetUserQueryHandler(IUserRepository userRepository) : IRequestHandl
         var user = await userRepository.GetUserById(request.UserId, cancellationToken);
 
         if (user == null)
-        {
-            return Error.NotFound("User.NotFound", $"User with id {request.UserId} not found.");
-        }
+            return DomainErrors.NotFound("User", request.UserId);
 
         return user;
     }

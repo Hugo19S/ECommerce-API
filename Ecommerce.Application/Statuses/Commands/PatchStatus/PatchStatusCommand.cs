@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -15,21 +16,15 @@ public class PatchStatusCommandHandler(IStatusRepository statusRepository, IUnit
     public async Task<ErrorOr<Updated>> Handle(PatchStatusCommand request, CancellationToken cancellationToken)
     {
         if (request.JsonPatch.Operations.Any(op => op.OperationType is OperationType.Move or OperationType.Copy))
-        {
-            return Error.Unauthorized("Operation.Unauthorized", $"Moving and copying operations are not allowed!");
-        }
+            return DomainErrors.OperationUnauthorized();
 
         if (request.JsonPatch is null || request.JsonPatch.Operations.Count == 0)
-        {
-            return Error.NotFound("JSonPatch.NotFound", $"JSonPatch should not be empty!");
-        }
+            return DomainErrors.JSonPatchNotFound();
 
         var status = await statusRepository.GetStatusById(request.StatusId, cancellationToken);
 
         if (status == null)
-        {
-            return Error.NotFound("Status.NotFound", $"Status with Id {request.StatusId} not found!");
-        }
+            return DomainErrors.NotFound("Status", request.StatusId);
 
         var nameOperation = request.JsonPatch.Operations.FirstOrDefault(op =>
                 (op.OperationType is OperationType.Add or OperationType.Replace) &&
@@ -41,9 +36,7 @@ public class PatchStatusCommandHandler(IStatusRepository statusRepository, IUnit
             var nameExist = await statusRepository.GetStatusByName(nameValue, status.Type, cancellationToken);
 
             if (nameExist != null)
-            {
-                return Error.Conflict("Name.Conflict", "There's already a statute of the same name on this type!");
-            }
+                return DomainErrors.Conflict("Status");
         }
 
         request.JsonPatch.ApplyTo(status);

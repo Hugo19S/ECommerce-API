@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -15,10 +16,8 @@ public class CreatePaymentMethodCommandHandler(IPaymentMethodRepository reposito
     {
         var paymentMethodExist = await repository.GetPaymentMethodByName(request.Name, cancellationToken);
 
-        if (paymentMethodExist != null) 
-        {
-            return Error.Conflict("PaymentMethod.Conflict", "There's already a payment method with the same name!");
-        }
+        if (paymentMethodExist != null)
+            return DomainErrors.Conflict("PaymentMethod");
 
         var newPaymentMethod = new PaymentMethod
         {

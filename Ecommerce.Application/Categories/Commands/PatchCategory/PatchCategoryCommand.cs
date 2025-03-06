@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -16,27 +17,19 @@ public class PatchCategoryCommandHandler(ICategoryRepository repository, IUnitOf
     public async Task<ErrorOr<Updated>> Handle(PatchCategoryCommand request, CancellationToken cancellationToken)
     {
         if (request.JsonPatch.Operations.Any(op => op.OperationType is OperationType.Move or OperationType.Copy))
-        {
-            return Error.Unauthorized("Operation.Unauthorized", $"Moving and copying operations are not allowed!");
-        }
+            return DomainErrors.OperationUnauthorized();
         
         if (request.JsonPatch.Operations.Any(op => op.path.Equals("/createdat", StringComparison.OrdinalIgnoreCase) ||
                                                    op.path.Equals("/updatedat", StringComparison.OrdinalIgnoreCase)))
-        {
-            return Error.Unauthorized("Operation.Unauthorized", $"This operation is not allowed in this path!");
-        }
+            return DomainErrors.OperationPathUnauthorized();
 
         if (request.JsonPatch is null || request.JsonPatch.Operations.Count == 0)
-        {
-            return Error.NotFound("JSonPatch.NotFound", $"JSonPatch should not be empty!");
-        }
+            return DomainErrors.JSonPatchNotFound();
 
         var category = await repository.GetCategoryById(request.CategoryId, cancellationToken);
 
         if (category == null)
-        {
-            return Error.NotFound("Category.NotFound", $"Category with Id {request.CategoryId} not found!");
-        }
+            return DomainErrors.NotFound("Category", request.CategoryId);
 
         var nameOperation = request.JsonPatch.Operations.FirstOrDefault(op =>
                 (op.OperationType is OperationType.Add or OperationType.Replace) &&
@@ -48,9 +41,7 @@ public class PatchCategoryCommandHandler(ICategoryRepository repository, IUnitOf
             var nameExist = await repository.GetCategoryByName(nameValue, cancellationToken);
 
             if (nameExist != null)
-            {
-                return Error.Conflict("Name.Conflict", "There's already a category of the same name on this type!");
-            }
+                return DomainErrors.CategoryTypeConflict();
         }
 
         request.JsonPatch.ApplyTo(category);

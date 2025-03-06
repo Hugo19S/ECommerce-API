@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -18,16 +19,12 @@ public class CreateSubCategoryCommandHandler(ISubCategoryRepository subCategoryR
         var category = await categoryRepository.GetCategoryById(request.CategoryId, cancellationToken);
 
         if (category == null)
-        {
-            return Error.NotFound("Category.NotFound", $"Category with id {request.CategoryId} not found.");
-        }
+            return DomainErrors.NotFound("Category", request.CategoryId);
 
         var sameName = await subCategoryRepository.GetSubCategoryByName(request.Name, cancellationToken);
 
         if (sameName != null)
-        {
-            return Error.Conflict("SubCategory.Conflict", "There's already a subCategory with the same name!");
-        }
+            return DomainErrors.Conflict("SubCategory");
 
         var subcategory = new SubCategory
         {

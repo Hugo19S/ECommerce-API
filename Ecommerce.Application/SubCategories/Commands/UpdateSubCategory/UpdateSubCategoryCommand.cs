@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -16,16 +17,12 @@ public class UpdateSubCategoryCommandHandler(ISubCategoryRepository repository, 
         var subCategory = await repository.GetSubCategoryById(request.SubCategoryId, cancellationToken);
 
         if (subCategory == null)
-        {
-            return Error.NotFound("SubCategory.NotFound", $"SubCategory with id {request.SubCategoryId} not found.");
-        }
+            return DomainErrors.NotFound("SubCategory", request.SubCategoryId);
 
         var sameName = await repository.GetSubCategoryByName(request.Name, cancellationToken);
 
         if (sameName != null)
-        {
-            return Error.Conflict("SubCategory.Conflict", "There's already a subCategory with the same name!");
-        }
+            return DomainErrors.Conflict("SubCategory");
 
         await repository.UpdateSubCategory(request.SubCategoryId, request.Name,
                                            request.Description, cancellationToken);

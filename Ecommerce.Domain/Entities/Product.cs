@@ -4,7 +4,7 @@ public class Product
 {
     public Guid Id { get; set; }
     public Guid CreatedBy { get; set; }
-    public Guid UpdatedBy { get; set; }
+    public Guid? UpdatedBy { get; set; }
     public Guid SubCategoryId { get; set; }
     public Guid MakerId { get; set; }
     public Guid SellerId { get; set; }
@@ -16,7 +16,6 @@ public class Product
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public User Creator { get; set; }
-    public User Updater { get; set; }
     public SubCategory SubCategory { get; set; }
     public Maker Maker { get; set; }
     public Seller Seller { get; set; }

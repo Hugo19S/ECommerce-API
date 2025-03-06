@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -15,9 +16,7 @@ public class GetSellerCommandHandler(ISellerRepository repository)
         var seller = await repository.GetSellerById(request.SellerId, cancellationToken);
 
         if (seller == null)
-        {
-            return Error.NotFound("Seller.NotFound", $"Seller with id {request.SellerId} not found.");
-        }
+            return DomainErrors.NotFound("Seller", request.SellerId);
 
         return seller;
     }

@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -16,9 +17,7 @@ public class GetMakerQueryHandler(IMakerRepostory repostory)
         var maker = await repostory.GetMakerById(request.MakerId, cancellationToken);
 
         if (maker == null)
-        {
-            return Error.NotFound("Maker.NotFound", $"Maker with id {request.MakerId} not found.");
-        }
+            return DomainErrors.NotFound("Maker", request.MakerId);
 
         return maker;
     }

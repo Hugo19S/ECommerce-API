@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ecommerce.Domain.Common;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Service.Contracts;
 
@@ -17,7 +18,12 @@ namespace Ecommerce.Service.Profiles
 
             /* Order Profile */
             CreateMap<Order, OrderResponse>();
+            CreateMap<OrderDto, OrderResponse>();
+            CreateMap<OrderItems, OrderItemsResponse>();
             CreateMap<OrderStatusHistory, OrderHistoryResponse>();
+
+            // Product Profile
+            CreateMap<Product, ProductResponse>();
             
             /* PaymentMethod Profile */
             CreateMap<PaymentMethod, PaymentMethodResponse>();

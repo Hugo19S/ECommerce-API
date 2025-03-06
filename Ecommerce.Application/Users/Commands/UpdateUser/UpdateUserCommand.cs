@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
 
@@ -17,16 +18,12 @@ public class UpdateUserCommandHandler(IUserRepository userRepository)
         var userToUpdate = await userRepository.GetUserById(request.UserId, cancellationToken);
 
         if (userToUpdate == null)
-        {
-            return Error.NotFound("User.NotFound", $"User with Id {request.UserId} not found!");
-        }
+            return DomainErrors.NotFound("User", request.UserId);
 
         var userWithSameEmail = await userRepository.GetUserByEmail(request.Email, cancellationToken);
 
         if (userWithSameEmail != null && userToUpdate != userWithSameEmail)
-        {
-            return Error.Conflict("User.Conflict", "There's already a user with the same e-mail address!");
-        }
+            return DomainErrors.Conflict("User");
 
         var userUpdated = await userRepository.UpdateUser(request.UserId,
                                                           request.Email,

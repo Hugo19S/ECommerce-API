@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -20,9 +21,7 @@ public class CreateUserCommandHandler(IUserRepository userRepository) : IRequest
         var user = await userRepository.GetUserByEmail(request.Email, cancellationToken);
 
         if (user != null)
-        {
-            return Error.Conflict("User.Conflict", "There's already a user with the same e-mail address!");
-        }
+            return DomainErrors.Conflict("User");
 
         var createUser = new User
         {

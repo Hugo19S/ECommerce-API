@@ -14,14 +14,11 @@ public class ProductEntityConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x => x.Model).IsRequired(false);
         builder.Property(x => x.IsActive).IsRequired();
         builder.Property(c => c.CreatedAt).IsRequired();
+        builder.Property(c => c.UpdatedBy).IsRequired(false);
         builder.Property(c => c.UpdatedAt).IsRequired(false);
 
         builder.HasOne(p => p.Creator).WithMany()
             .HasForeignKey(p => p.CreatedBy)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(p => p.Updater).WithMany()
-            .HasForeignKey(p => p.UpdatedBy)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

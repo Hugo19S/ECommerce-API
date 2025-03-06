@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
 
@@ -13,9 +14,7 @@ public class DeleteUserCommandHandler(IUserRepository userRepository) : IRequest
         var userExist = await userRepository.GetUserById(request.UserId, cancellationToken);
 
         if (userExist == null)
-        {
-            return Error.NotFound("User.NotFound", $"User with Id {request.UserId} not found!");
-        }
+            return DomainErrors.NotFound("User", request.UserId);
 
         return await userRepository.DeleteUser(request.UserId, cancellationToken);
     }

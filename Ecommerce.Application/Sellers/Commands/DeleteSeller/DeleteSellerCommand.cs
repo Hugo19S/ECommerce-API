@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -15,9 +16,7 @@ public class DeleteSellerCommandHandler(ISellerRepository repository, IUnitOfWor
         var sellerExist = await repository.GetSellerById(request.SellerId, cancellationToken);
 
         if (sellerExist == null)
-        {
-            return Error.NotFound("Seller.NotFound", $"Seller with id {request.SellerId} not found.");
-        }
+            return DomainErrors.NotFound("Seller", request.SellerId);
 
         await repository.DeleteSeller(request.SellerId, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

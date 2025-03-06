@@ -826,7 +826,7 @@ namespace Ecommerce.Infratructure.Migrations
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UpdatedBy")
+                    b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -838,8 +838,6 @@ namespace Ecommerce.Infratructure.Migrations
                     b.HasIndex("SellerId");
 
                     b.HasIndex("SubCategoryId");
-
-                    b.HasIndex("UpdatedBy");
 
                     b.ToTable("Product");
                 });
@@ -1529,7 +1527,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "lucas.silva@example.com",
                             FirstName = "Lucas",
                             LastName = "Silva",
-                            Password = "$2a$11$Z6zQyfFxcGMip5oxPd9Zn.i1Y79Q0ssd/RbvFnVb1D/5wCVV7NrbC",
+                            Password = "$2a$11$37wPZVmiTUsMGfFxQOy6QeL36q1xSgwMizZ9mBqGqfBi7Pbsh4r5.",
                             PhoneNumber = "912345678",
                             UserRoleId = new Guid("1a2b3c4d-5e6f-7890-1234-56789abcdef0")
                         },
@@ -1541,7 +1539,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "mariana.santos@example.com",
                             FirstName = "Mariana",
                             LastName = "Santos",
-                            Password = "$2a$11$IfkBJmmHGr9cfOm.fiH8LOqaBX.wX4GrhKjYyJy97Xqkn6aOlUMdi",
+                            Password = "$2a$11$nctY7tuujMl0cg2cdEwzxOBNkx.GTkNCpcgGUzQx6T5VzYhJu6pwu",
                             PhoneNumber = "922345678",
                             UserRoleId = new Guid("1a2b3c4d-5e6f-7890-1234-56789abcdef0")
                         },
@@ -1553,7 +1551,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "ricardo.mendes@example.com",
                             FirstName = "Ricardo",
                             LastName = "Mendes",
-                            Password = "$2a$11$mh3SJ.Lkzu/zLc4d1Iz2I.531EVH62CehxjqiwBMMmeuHAf0eXADi",
+                            Password = "$2a$11$4OtAo2Kh6h1J12WfC3Z0F.hG4jnNY8NgERImF1nqQixi7rbASly.m",
                             PhoneNumber = "932345678",
                             UserRoleId = new Guid("1a2b3c4d-5e6f-7890-1234-56789abcdef0")
                         },
@@ -1565,7 +1563,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "fernanda.lima@example.com",
                             FirstName = "Fernanda",
                             LastName = "Lima",
-                            Password = "$2a$11$h/p5l3C6N1zad/h9cd0B0eJPKeVAFBKTBOFAmIDZ9XdBQKUzzXaey",
+                            Password = "$2a$11$i4djBfN0Mp309Xtz4tGum.HDsO59OIqXZ3PB/pma15OpVab3y8uzm",
                             PhoneNumber = "942345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1577,7 +1575,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "eduardo.almeida@example.com",
                             FirstName = "Eduardo",
                             LastName = "Almeida",
-                            Password = "$2a$11$VKO8lAHwmCwr/kq89izD9OF2YGNrDHQjtU6L6bwwKR0NYEOkMIcDi",
+                            Password = "$2a$11$40rzdGvlDEdIoEAaDsCVJ.FFc.yCRTHJHl1BdsgUNcgyfVYqK8zja",
                             PhoneNumber = "952345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1589,7 +1587,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "ana.ferreira@example.com",
                             FirstName = "Ana",
                             LastName = "Ferreira",
-                            Password = "$2a$11$LhsREZ1x4pVHEVuB5ZHE5Okns3DGEKH7NX7V/dn.fwpMRradRHV7m",
+                            Password = "$2a$11$dlk2ZIhXWLHVxNrLBnIhEuMBqv/.qE17tCdp/crLBI6R3mwm.JBQy",
                             PhoneNumber = "962345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1601,7 +1599,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "carlos.pereira@example.com",
                             FirstName = "Carlos",
                             LastName = "Pereira",
-                            Password = "$2a$11$nMZXrVmrYxY.3JcM5OBIU.IV6wiGdwB33xCJrAB04d.RfiQ1Fw9A6",
+                            Password = "$2a$11$JtOWW22vyjZECbsllMfmwuMUzZ/./jxqmX7ae/uY59LsefE6b7cCC",
                             PhoneNumber = "972345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1613,7 +1611,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "beatriz.costa@example.com",
                             FirstName = "Beatriz",
                             LastName = "Costa",
-                            Password = "$2a$11$.KtKk9A.RuZKuzYx5wA4PeVo8ePyuf8F56OveQ60YHNiZ08nUln4m",
+                            Password = "$2a$11$E6hoVSOCtaJqOWhEDwV/.udusHQclOQZcfRu8ngsJZ2xbDBr6RESm",
                             PhoneNumber = "982345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1625,7 +1623,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "guilherme.rodrigues@example.com",
                             FirstName = "Guilherme",
                             LastName = "Rodrigues",
-                            Password = "$2a$11$GSB.AgtB3oHRbvXQdKmK7uJcJEnOnk1hYsF77SjS/mTEfZ4E9KdWO",
+                            Password = "$2a$11$ZEEaZHJpwxTBcfm2cOz1L.5ORY7KlzpAweLQp6Ekk30XVjKjsQstG",
                             PhoneNumber = "992345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1637,7 +1635,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "sofia.martins@example.com",
                             FirstName = "Sofia",
                             LastName = "Martins",
-                            Password = "$2a$11$ww6eHmGr.MuyVKsNtf5ZXu8YYcKN3m2H/L5bD5Ku7lmuPSaea..rW",
+                            Password = "$2a$11$EryXLITJA3t/Eecj104thukwQTnA9uHZ4lyhMOXomKd7OQMQQvMny",
                             PhoneNumber = "1002345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1649,7 +1647,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "joao.carvalho@example.com",
                             FirstName = "João",
                             LastName = "Carvalho",
-                            Password = "$2a$11$rVtJTKGjHfgu5fd44hD6UeRupGrvAO/3vpmJqRENtcBXUl5I7.rvO",
+                            Password = "$2a$11$WUFN1j0XDd95V1UqQVnvSuxTHSmN28M6VCsobD9j96esrcR9qnXyS",
                             PhoneNumber = "1102345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1661,7 +1659,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "camila.ribeiro@example.com",
                             FirstName = "Camila",
                             LastName = "Ribeiro",
-                            Password = "$2a$11$VIsB6fNzvmlDgNBFlPhaTOfRCY1IFh9jsh5q808p3NRwA6s.I0KzC",
+                            Password = "$2a$11$HSu3csIcUvQkigBrzMPeaujHEawHLDRjSyijJrT8HL1U3iBelxBV.",
                             PhoneNumber = "1202345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1673,7 +1671,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "thiago.gomes@example.com",
                             FirstName = "Thiago",
                             LastName = "Gomes",
-                            Password = "$2a$11$85hRXWa8OpwOQgCDqh1P/.n2fCVXFhWxoJzsnZu7l4IlwuqwS5GQ2",
+                            Password = "$2a$11$nvENX05mBUKw03On2tEJAu6eIwLUJpH9WBwDuGVlGm4/kk.QTyLCC",
                             PhoneNumber = "1302345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1685,7 +1683,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "larissa.duarte@example.com",
                             FirstName = "Larissa",
                             LastName = "Duarte",
-                            Password = "$2a$11$hMzwUFZlBn5Uk/sf/834l.UUOkjrVgFOYt.XCt3Ge3nMxmzrq7xTC",
+                            Password = "$2a$11$Q4po1aElASPVDCwUDnyzkODb0yH5a1f.i1bHg/OA6WuyPEMFHTO5y",
                             PhoneNumber = "1402345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         },
@@ -1697,7 +1695,7 @@ namespace Ecommerce.Infratructure.Migrations
                             Email = "pedro.nunes@example.com",
                             FirstName = "Pedro",
                             LastName = "Nunes",
-                            Password = "$2a$11$cW1.hawHWR01dTsFjHE/JuQNQH.EVyAqcBdxFho2DPFhRhAAu..sK",
+                            Password = "$2a$11$bA.5tDAf/8WkptAanIXULuyJLUnTVuQNisYfExLq2hmiLaTKY1bJq",
                             PhoneNumber = "1502345678",
                             UserRoleId = new Guid("3c4d5e6f-7890-1234-5678-9abcdef01234")
                         });
@@ -1885,12 +1883,6 @@ namespace Ecommerce.Infratructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ecommerce.Domain.Entities.User", "Updater")
-                        .WithMany()
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Creator");
 
                     b.Navigation("Maker");
@@ -1898,8 +1890,6 @@ namespace Ecommerce.Infratructure.Migrations
                     b.Navigation("Seller");
 
                     b.Navigation("SubCategory");
-
-                    b.Navigation("Updater");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.ProductDiscount", b =>

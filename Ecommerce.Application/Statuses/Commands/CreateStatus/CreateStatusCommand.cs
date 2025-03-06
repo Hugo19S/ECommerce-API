@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -15,9 +16,7 @@ public class CreateStatusCommandHandler(IStatusRepository repository, IUnitOfWor
         var statusWithSameName = await repository.GetStatusByName(request.Name, request.Type, cancellationToken);
 
         if (statusWithSameName != null)
-        {
-            return Error.Conflict("Status.Conflict", "There's already a statute of the same name on this type!");
-        }
+            return DomainErrors.Conflict("Status");
 
         var createStatus = new Status
         {

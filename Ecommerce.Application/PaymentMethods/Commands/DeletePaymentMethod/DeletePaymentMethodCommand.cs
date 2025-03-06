@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -15,9 +16,7 @@ public class DeletePaymentMethodCommandHandler(IPaymentMethodRepository reposito
         var paymentMethodExist = await repository.GetPaymentMethodById(request.PaymentMethodId, cancellationToken);
         
         if (paymentMethodExist == null) 
-        {
-            return Error.NotFound("PaymentMethod.NotFound", $"PaymentMethod with id {request.PaymentMethodId} not found.");
-        }
+            return DomainErrors.NotFound("PaymentMethod", request.PaymentMethodId);
 
         await repository.DeletePaymentMethod(request.PaymentMethodId, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

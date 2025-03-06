@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -16,9 +17,7 @@ public class GetSubCategoriesQueryHandler(ISubCategoryRepository subCategoryRepo
         var category = await categoryRepository.GetCategoryById(request.CategoryId, cancellationToken);
 
         if (category == null)
-        {
-            return Error.NotFound("Category.NotFound", $"Category with id {request.CategoryId} not found.");
-        }
+            return DomainErrors.NotFound("Category", request.CategoryId);
 
         return await subCategoryRepository.GetSubCategoriesByCategory(request.CategoryId, cancellationToken);
     }

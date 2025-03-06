@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -16,9 +17,7 @@ public class CreateSellerCommandHandler(ISellerRepository repository, IUnitOfWor
         var sellerWithSameName = await repository.GetSellerByName(request.Name, cancellationToken);
 
         if (sellerWithSameName != null)
-        {
-            return Error.Conflict("Seller.Conflict", "There's already a seller with the same name!");
-        }
+            return DomainErrors.Conflict("Seller");
 
         var newSeller = new Seller
         {

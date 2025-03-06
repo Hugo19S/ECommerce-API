@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -14,9 +15,8 @@ public class GetStatusQueryHandler(IStatusRepository statusRepository) : IReques
         var statusOr = await statusRepository.GetStatusById(request.StatusId, cancellationToken);
 
         if (statusOr == null) 
-        {
-            return Error.NotFound("Status.NotFound", $"Status with id {request.StatusId} not found.");
-        }
+            return DomainErrors.NotFound("Status", request.StatusId);
+
         return statusOr;
     }
 }

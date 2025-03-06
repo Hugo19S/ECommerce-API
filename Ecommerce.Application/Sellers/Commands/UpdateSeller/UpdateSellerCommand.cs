@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -15,12 +16,12 @@ public class UpdateSellerCommandHandler(ISellerRepository repository, IUnitOfWor
         var sellerExist =await repository.GetSellerById(request.SellerId, cancellationToken);
 
         if (sellerExist == null)
-            return Error.NotFound("Seller.NotFound", $"Seller with id {request.SellerId} not found.");
+            return DomainErrors.NotFound("Seller", request.SellerId);
 
         var sellerWithSameName = await repository.GetSellerByName(request.Name, cancellationToken);
 
         if (sellerWithSameName != null)
-            return Error.Conflict("Seller.Conflict", "There's already a seller with the same name!");
+            return DomainErrors.Conflict("Seller");
 
         await repository.UpdateSeller(request.SellerId, request.Name, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);

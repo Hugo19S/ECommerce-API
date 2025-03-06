@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -15,16 +16,12 @@ public class UpdatePaymentMethodCommandHandler(IPaymentMethodRepository reposito
         var paymentMethodExist = await repository.GetPaymentMethodById(request.PaymentMethodId, cancellationToken);
 
         if (paymentMethodExist == null)
-        {
-            return Error.NotFound("PaymentMethod.NotFound", $"PaymentMethod with id {request.PaymentMethodId} not found.");
-        }
+            return DomainErrors.NotFound("PaymentMethod", request.PaymentMethodId);
 
         var paymentMethodWithSameName = await repository.GetPaymentMethodByName(request.Name, cancellationToken);
 
         if (paymentMethodWithSameName != null)
-        {
-            return Error.Conflict("PaymentMethod.Conflict", "There's already a payment method with the same name!");
-        }
+            return DomainErrors.Conflict("PaymentMethod");
 
         await repository.UpdatePaymentMethod(request.PaymentMethodId, request.Name, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
