@@ -4,9 +4,9 @@ using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Infratructure.EntitiesConfiguration;
 
-public class CartEntityConfiguration : IEntityTypeConfiguration<Cart>
+public class CartItemsEntityConfiguration : IEntityTypeConfiguration<CartItems>
 {
-    public void Configure(EntityTypeBuilder<Cart> builder)
+    public void Configure(EntityTypeBuilder<CartItems> builder)
     {
         builder.Property(c => c.Quantity).IsRequired();
     }
