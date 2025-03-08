@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Carts\Commands\" />
     <Folder Include="Carts\Queries\GetCartPrudcts\" />
-    <Folder Include="Payments\Queries\" />
   </ItemGroup>
 
 </Project>

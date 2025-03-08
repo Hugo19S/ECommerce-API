@@ -1,20 +1,13 @@
-﻿using Ecommerce.Domain.Entities;
-using ErrorOr;
+﻿using Ecommerce.Domain.Common;
+using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Application.IRepositories;
 
 public interface IPaymentRepository
 {
-    Task<ErrorOr<Created>> AddPayment(Guid orderId,
-                                      Guid paymentMethodId,
-                                      Guid statusId,
-                                      float totalPaid,
-                                      CancellationToken cancellationToken);
-    Task<ErrorOr<Payment>> GetPaymentById(Guid paymentId, CancellationToken cancellationToken);
-    Task<List<Payment>> GetAllPayment(Guid paymentId, Guid orderId, CancellationToken cancellationToken);
-    Task<List<Updated>> UpdatePayment(Guid paymentId,
-                                      Guid statusId,
-                                      float value,
-                                      string? note,
-                                      CancellationToken cancellationToken);
+    Task AddPayment(Payment payment, CancellationToken cancellationToken);
+    Task AddPaymentHistory(PaymentStatusHistory paymentHistory,  CancellationToken cancellationToken);
+    Task<Payment?> GetPaymentById(Guid paymentId, CancellationToken cancellationToken);
+    Task<PaymentDto?> GetPaymentByOrder(Guid orderId, CancellationToken cancellationToken);
+    Task UpdatePayment(Guid paymentId, CancellationToken cancellationToken);
 }
