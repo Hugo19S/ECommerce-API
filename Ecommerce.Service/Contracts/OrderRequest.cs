@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Domain.Common;
+using Ecommerce.Domain.Entities;
 
 namespace Ecommerce.Service.Contracts;
 
@@ -21,16 +22,23 @@ public class CreateOrderHistoryRequest
 public class OrderResponse
 {
     public Guid Id { get; set; }
-    public Guid UserId { get; set; }
     public float Total { get; set; }
-    public DateTimeOffset CreateAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public List<OrderItemsResponse> Items { get; set; }
+    public List<OrderHistoryResponse> StatusHistory { get; set; }
 }
 
 public class OrderHistoryResponse
 {
     public Guid Id { get; set; }
-    public Guid OrderId { get; set; }
-    public Guid StatusId { get; set; }
     public string? Note { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public Status Status { get; set; }
+}
+
+public class OrderItemsResponse
+{
+    public Guid Id { get; set; }
+    public int Quantity { get; set; }
+    public Product Product { get; set; }
 }

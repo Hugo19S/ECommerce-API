@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
@@ -18,16 +19,12 @@ public class CreateOrderHistoryCommandHandler(IOrderRepository orderRepository,
         var order = await orderRepository.GetOrderById(request.OrderId, cancellationToken);
 
         if (order == null)
-        {
-            return Error.NotFound("Order.NotFound", $"Order with id {request.OrderId} not found.");
-        }
+            return DomainErrors.NotFound("Order", request.OrderId);
         
         var status = await statusRepository.GetStatusById(request.StatusId, cancellationToken);
 
         if (status == null)
-        {
-            return Error.NotFound("Status.NotFound", $"Satus with id {request.StatusId} not found.");
-        }
+            return DomainErrors.NotFound("Status", request.StatusId);
 
         var orderHistory = new OrderStatusHistory
         {
@@ -39,7 +36,7 @@ public class CreateOrderHistoryCommandHandler(IOrderRepository orderRepository,
         };
 
         await orderRepository.AddOrderHistory(orderHistory, cancellationToken);
-        await orderRepository.UpdateOrder(order.Id, order.Total, cancellationToken);
+        await orderRepository.UpdateOrder(order.Id, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new Created();

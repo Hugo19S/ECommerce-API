@@ -62,11 +62,15 @@ public class ProductRepository(ECommerceDbContext dbContext) : IProductRepositor
                 Maker = p.Maker.Name,
                 SubCategory = p.SubCategory.Name,
                 IsActive = p.IsActive,
-                Price = dbContext.ProductPrice.Where(n => n.ProductId == p.Id)
+                Price = dbContext.ProductPrice
+                        .AsNoTracking()
+                        .Where(n => n.ProductId == p.Id)
                         .OrderByDescending(n => n.CreatedAt)
                         .Select(n => n.Price)
                         .FirstOrDefault(),
-                Discount = dbContext.ProductDiscount.Where(n => n.ProductId == p.Id)
+                Discount = dbContext.ProductDiscount
+                        .AsNoTracking()
+                        .Where(n => n.ProductId == p.Id)
                         .OrderByDescending(n => n.CreatedAt)
                         .Select(n => n.Discount)
                         .FirstOrDefault(),
@@ -98,11 +102,15 @@ public class ProductRepository(ECommerceDbContext dbContext) : IProductRepositor
                 Maker = p.Maker.Name,
                 SubCategory = p.SubCategory.Name,
                 IsActive = p.IsActive,
-                Price = dbContext.ProductPrice.Where(n => n.ProductId == p.Id)
+                Price = dbContext.ProductPrice
+                        .AsNoTracking()
+                        .Where(n => n.ProductId == p.Id)
                         .OrderByDescending(n => n.CreatedAt)
                         .Select(n => n.Price)
                         .FirstOrDefault(),
-                Discount = dbContext.ProductDiscount.Where(n => n.ProductId == p.Id)
+                Discount = dbContext.ProductDiscount
+                        .AsNoTracking()
+                        .Where(n => n.ProductId == p.Id)
                         .OrderByDescending(n => n.CreatedAt)
                         .Select(n => n.Discount)
                         .FirstOrDefault(),

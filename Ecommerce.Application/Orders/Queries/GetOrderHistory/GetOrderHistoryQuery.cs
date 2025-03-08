@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -16,9 +17,7 @@ public class GetOrderHistoryQueryHandler(IOrderRepository repository)
         var order = await repository.GetOrderById(request.OrderId, cancellationToken);
 
         if (order == null)
-        {
-            return Error.NotFound("Order.NotFound", $"Order with id {request.OrderId} not found.");
-        }
+            return DomainErrors.NotFound("Order", request.OrderId);
 
         return await repository.GetOrderHistory(request.OrderId, cancellationToken);
     }

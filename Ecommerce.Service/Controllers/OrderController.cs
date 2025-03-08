@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Ecommerce.Application.Orders.Commands.CreateOrder;
 using Ecommerce.Application.Orders.Commands.CreateOrderHistory;
-using Ecommerce.Application.Orders.Commands.UpdateOrderCommand;
 using Ecommerce.Application.Orders.Queries.GetOrder;
 using Ecommerce.Application.Orders.Queries.GetOrderHistory;
 using Ecommerce.Application.Orders.Queries.GetUserOrders;
@@ -61,16 +60,5 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
                                                                                     cancellationToken);
 
         return orderHistoryCreatedOr.Match(v => Ok(v), Problem);
-    }
-
-    [HttpPut("{orderId}")]
-    public async Task<ActionResult> UpdateOrderCommand(Guid orderId,
-                                                 [FromBody] UpdateOrderRequest orderRequest,
-                                                 CancellationToken cancellationToken)
-    {
-        var orderUpdatedOr = await sender.Send(new UpdateOrderCommand(orderId, 
-                                                                      orderRequest.Value), 
-                                                                      cancellationToken);
-        return orderUpdatedOr.Match(v => Ok(v), Problem);
     }
 }
