@@ -13,9 +13,8 @@ namespace Ecommerce.Service.Controllers;
 [Route("api/[controller]")]
 public class UserController(ISender sender, IMapper mapper) : ApiController
 {
-    [HttpPost("{userRoleId:guid}")]
-    public async Task<ActionResult> CreateUser(Guid userRoleId,
-                                               [FromBody] CreateUserRequest createUser,
+    [HttpPost()]
+    public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest createUser,
                                                CancellationToken cancellationToken) 
     {
         var userOr = await sender.Send(new CreateUserCommand(createUser.FirstName,
@@ -23,12 +22,10 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
                                                         createUser.Email,
                                                         createUser.Password,
                                                         createUser.PhoneNumber,
-                                                        createUser.Address,
-                                                        userRoleId), cancellationToken);
+                                                        createUser.Address), 
+                                                        cancellationToken);
 
-        return userOr.Match(
-            v => Created("", v), 
-            Problem);
+        return userOr.Match(v => Ok(v), Problem);
     }
     
     [HttpGet("{userId:guid}")]
@@ -37,8 +34,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
         var userOr = await sender.Send(new GetUserQuery(userId), cancellationToken);
 
         return userOr.Match(
-            v => Ok(mapper.Map<UserResponse>(v)), 
-            Problem);
+            v => Ok(mapper.Map<UserResponse>(v)), Problem);
     }
     
     [HttpGet]
@@ -46,8 +42,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     {
         var users = await sender.Send(new GetUsersQuery(), cancellationToken);
         return users.Match(
-            v => Ok(mapper.Map<List<UserResponse>>(v)),
-            Problem);
+            v => Ok(mapper.Map<List<UserResponse>>(v)), Problem);
 
     }
 
@@ -60,9 +55,8 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
                                                                     updateUser.PhoneNumber,
                                                                     updateUser.Address), cancellationToken);
 
-        return userUpdatedOr.Match(
-                v => Ok(v),
-                Problem);
+
+        return userUpdatedOr.Match(v => Ok(v), Problem);
     }
     
     [HttpDelete("{userId:guid}")]
@@ -70,8 +64,6 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     {
         var deletedUserOr = await sender.Send(new DeleteUserCommand(userId), cancellationToken);
 
-        return deletedUserOr.Match(
-            v => Ok(v),
-            Problem);
+        return deletedUserOr.Match(v => Ok(v), Problem);
     }
 }

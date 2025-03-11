@@ -24,12 +24,12 @@ public class CategoryRepository(ECommerceDbContext dbContext) : ICategoryReposit
 
     public async Task<Category?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken)
     {
-        return await dbContext.Category.FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
+        return await dbContext.Category.AsNoTracking().FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken);
     }
 
     public async Task<Category?> GetCategoryByName(string categoryName, CancellationToken cancellationToken)
     {
-        return await dbContext.Category.FirstOrDefaultAsync(x => x.Name == categoryName, cancellationToken);
+        return await dbContext.Category.AsNoTracking().FirstOrDefaultAsync(x => x.Name == categoryName, cancellationToken);
     }
 
     public async Task UpdateCategory(Guid categoryId, string name, string description, CancellationToken cancellationToken)

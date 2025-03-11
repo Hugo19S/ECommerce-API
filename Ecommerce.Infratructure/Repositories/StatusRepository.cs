@@ -17,9 +17,9 @@ public class StatusRepository(ECommerceDbContext dbContext) : IStatusRepository
         await dbContext.Status.Where(x => x.Id == statusId).ExecuteDeleteAsync(cancellationToken);
     }
 
-    public Task<List<Status>> GetAllStatus(CancellationToken cancellationToken)
+    public async Task<List<Status>> GetAllStatus(CancellationToken cancellationToken)
     {
-        return dbContext.Status.OrderBy(x => x.Name).ToListAsync(cancellationToken);
+        return await dbContext.Status.OrderBy(x => x.Name).ToListAsync(cancellationToken);
     }
 
     public async Task<Status?> GetStatusById(Guid statusId, CancellationToken cancellationToken)

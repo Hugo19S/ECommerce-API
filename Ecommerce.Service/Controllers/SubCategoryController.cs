@@ -32,11 +32,11 @@ public class SubCategoryController(ISender sender, IMapper mapper) : ApiControll
     }
     
     [HttpPost("{categoryId:guid}")]
-    public Task<ActionResult> CreateSubCategory(Guid categoryId,
+    public async Task<ActionResult> CreateSubCategory(Guid categoryId,
                                                 [FromBody] CreateSubCategoryRequest request,
                                                 CancellationToken cancellationToken)
     {
-        var subCategoryCreatedOr = sender.Send(new CreateSubCategoryCommand(request.Name,
+        var subCategoryCreatedOr = await sender.Send(new CreateSubCategoryCommand(request.Name,
                                                                             request.Description,
                                                                             categoryId), cancellationToken);
 

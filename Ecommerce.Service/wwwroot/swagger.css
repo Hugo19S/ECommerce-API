@@ -1,0 +1,35 @@
+﻿.swagger-ui {
+    background-color: #1a1d20;
+}
+
+.swagger-ui,
+.swagger-ui .info .title,
+.swagger-ui a.nostyle,
+.swagger-ui table thead tr td, 
+.swagger-ui table thead tr th,
+.swagger-ui .parameter__name,
+.swagger-ui .parameter__type,
+.swagger-ui .response-col_status,
+.swagger-ui .tab li button.tablinks,
+.swagger-ui .responses-inner h4,
+.swagger-ui .responses-inner h5,
+.swagger-ui .btn,
+.swagger-ui .opblock .opblock-section-header h4
+{
+    color: #fff;
+}
+
+.swagger-ui .response-col_links
+{
+    color: #007fff;
+}
+
+.swagger-ui textarea {
+    background-color: #1a1d20;
+    color: #fff;
+}
+
+.swagger-ui .opblock .opblock-section-header
+{
+    background: hsl(217.07deg 59.35% 32.42% / 80%);
+}

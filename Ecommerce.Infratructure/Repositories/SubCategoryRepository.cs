@@ -28,9 +28,9 @@ public class SubCategoryRepository(ECommerceDbContext dbContext) : ISubCategoryR
         return await dbContext.SubCategory.FirstOrDefaultAsync(x => x.Id == subCategoryId, cancellationToken);
     }
 
-    public Task<SubCategory?> GetSubCategoryByName(string name, CancellationToken cancellationToken)
+    public async Task<SubCategory?> GetSubCategoryByName(string name, CancellationToken cancellationToken)
     {
-        return dbContext.SubCategory.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+        return await dbContext.SubCategory.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
     }
 
     public async Task UpdateSubCategory(Guid subCategoryId,

@@ -15,7 +15,7 @@ public static class DomainErrors
 
     // Order Error
     public static Error Generic(string entity, string item) =>
-        Error.NotFound($"This {entity} don't have {item}");
+        Error.NotFound($"{item}.NotFound", $"This {entity} don't have {item}");
 
     public static Error CategoryTypeConflict() =>
         Error.Conflict("Name.Conflict", "There's already a category of the same name on this type!");

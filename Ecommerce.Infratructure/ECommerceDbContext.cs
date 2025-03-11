@@ -14,6 +14,7 @@ public class ECommerceDbContext : DbContext, IUnitOfWork
     public ECommerceDbContext(DbContextOptions<ECommerceDbContext> option) : base(option) { }
 
     public DbSet<Cart> Cart { get; set; }
+    public DbSet<CartItems> CartItems { get; set; }
     public DbSet<Category> Category { get; set; }
     public DbSet<Maker> Maker { get; set; }
     public DbSet<Order> Order { get; set; }

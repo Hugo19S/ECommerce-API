@@ -27,9 +27,9 @@ public class SellerRespository(ECommerceDbContext dbContext) : ISellerRepository
         return await dbContext.Seller.FirstOrDefaultAsync(x => x.Id == sellerId, cancellationToken);
     }
 
-    public Task<Seller?> GetSellerByName(string name, CancellationToken cancellationToken)
+    public async Task<Seller?> GetSellerByName(string name, CancellationToken cancellationToken)
     {
-        return dbContext.Seller.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+        return await dbContext.Seller.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
     }
 
     public async Task UpdateSeller(Guid sellerId, string name, CancellationToken cancellationToken)

@@ -7,11 +7,9 @@ namespace Ecommerce.Infratructure.Repositories;
 
 public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
 {
-    public async Task<ErrorOr<Created>> AddUser(User user, CancellationToken cancellationToken)
+    public async Task AddUser(User user, CancellationToken cancellationToken)
     {
         await dbContext.User.AddAsync(user, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        return new Created();
     }
     public async Task<List<User>> GetAllUser(CancellationToken cancellationToken)
     {
@@ -31,27 +29,30 @@ public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
         return await dbContext.User.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
     }
 
-    public async Task<ErrorOr<Deleted>> DeleteUser(Guid userId, CancellationToken cancellationToken)
+    public async Task DeleteUser(Guid userId, CancellationToken cancellationToken)
     {
         await dbContext.User.Where(x=>x.Id == userId).ExecuteDeleteAsync(cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        return new Deleted();
     }
 
-    public async Task<ErrorOr<Updated>> UpdateUser(Guid userId,
-                                                   string email,
-                                                   string phoneNumber,
-                                                   string address,
-                                                   CancellationToken cancellationToken)
+    public async Task UpdateUser(Guid userId,string email,string phoneNumber,
+                                 string address, CancellationToken cancellationToken)
     {
         await dbContext.User.Where(x => x.Id == userId)
             .ExecuteUpdateAsync(x => x
             .SetProperty(p => p.Email, email)
             .SetProperty(p => p.PhoneNumber, phoneNumber)
-            .SetProperty(p => p.Address, address));
+            .SetProperty(p => p.Address, address),
+            cancellationToken);
+    }
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+    public async Task CreateUserCart(Cart cart, CancellationToken cancellationToken)
+    {
+        await dbContext.Cart.AddAsync(cart, cancellationToken);
+    }
 
-        return new Updated();
+    public async Task<UserRole?> GetRole(string role, CancellationToken cancellationToken)
+    {
+        return await dbContext.UserRoles
+                        .FirstOrDefaultAsync(x => x.Name == role, cancellationToken);
     }
 }

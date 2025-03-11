@@ -17,10 +17,9 @@ public static class DependencyInjections
         services.AddDbContext<ECommerceDbContext>(option => 
             option.UseNpgsql(configuration.GetConnectionString("ECommerce1")));
 
-        //services.AddScoped<ICartRepository, >();
+        services.AddScoped<ICartRepository, CartRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IMakerRepostory, MakerRepository>();
-        //services.AddScoped<IOrderItemsRepository, >();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();

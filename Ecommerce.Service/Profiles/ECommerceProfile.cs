@@ -12,6 +12,9 @@ namespace Ecommerce.Service.Profiles
         {
             /* Category Profile */
             CreateMap<Category, CategoryResponse>();
+            
+            /* CartItem Profile */
+            CreateMap<CartItems, CategoryResponse>();
 
             /* Maker Profile */
             CreateMap<Maker, GetMakerResponse>();

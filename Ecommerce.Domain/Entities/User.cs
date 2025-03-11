@@ -13,5 +13,5 @@ public class User
     public string? AlternativeAddress { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    //public UserRole UserRole { get; set; }
+    public UserRole UserRole { get; set; }
 }

@@ -15,10 +15,10 @@ namespace Ecommerce.Service.Controllers;
 public class PaymentMethodController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpPost]
-    public Task<ActionResult> CreatePaymentMethod([FromBody] CreatePaymentMethodRequest paymentMethodRequest,
+    public async Task<ActionResult> CreatePaymentMethod([FromBody] CreatePaymentMethodRequest paymentMethodRequest,
                                                   CancellationToken cancellationToken)
     {
-        var createdPaymentMethodOr = sender.Send(new CreatePaymentMethodCommand(paymentMethodRequest.Name), cancellationToken);
+        var createdPaymentMethodOr = await sender.Send(new CreatePaymentMethodCommand(paymentMethodRequest.Name), cancellationToken);
 
         return createdPaymentMethodOr.Match(v => Ok(v), Problem);
     }
@@ -52,11 +52,11 @@ public class PaymentMethodController(ISender sender, IMapper mapper) : ApiContro
     }
 
     [HttpPut("{paymentMethodId:guid}")]
-    public Task<ActionResult> UpdatePaymentMethod(Guid paymentMethodId,
+    public async Task<ActionResult> UpdatePaymentMethod(Guid paymentMethodId,
                                                   [FromBody] UpdatePaymentMethodRequest paymentMethodRequest,
                                                   CancellationToken cancellationToken)
     {
-        var updatedPaymentMethodOr = sender.Send(new UpdatePaymentMethodCommand(paymentMethodId,
+        var updatedPaymentMethodOr = await sender.Send(new UpdatePaymentMethodCommand(paymentMethodId,
                                                                                 paymentMethodRequest.Name), cancellationToken);
         return updatedPaymentMethodOr.Match(v => Ok(v), Problem);
     }

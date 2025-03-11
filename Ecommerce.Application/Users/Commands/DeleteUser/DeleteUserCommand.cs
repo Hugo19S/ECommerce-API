@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.CustomErrors;
+﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -7,7 +8,8 @@ namespace Ecommerce.Application.Users.Commands.DeleteUser;
 
 public record DeleteUserCommand(Guid UserId) : IRequest<ErrorOr<Deleted>>;
 
-public class DeleteUserCommandHandler(IUserRepository userRepository) : IRequestHandler<DeleteUserCommand, ErrorOr<Deleted>>
+public class DeleteUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    : IRequestHandler<DeleteUserCommand, ErrorOr<Deleted>>
 {
     public async Task<ErrorOr<Deleted>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
@@ -16,6 +18,9 @@ public class DeleteUserCommandHandler(IUserRepository userRepository) : IRequest
         if (userExist == null)
             return DomainErrors.NotFound("User", request.UserId);
 
-        return await userRepository.DeleteUser(request.UserId, cancellationToken);
+        await userRepository.DeleteUser(request.UserId, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return new Deleted();
     }
 }

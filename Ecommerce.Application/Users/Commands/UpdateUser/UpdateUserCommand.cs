@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.CustomErrors;
+﻿using Ecommerce.Application.Common;
+using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using ErrorOr;
 using MediatR;
@@ -10,7 +11,7 @@ public record UpdateUserCommand(Guid UserId,
                                  string PhoneNumber,
                                  string Adrress) : IRequest<ErrorOr<Updated>>;
 
-public class UpdateUserCommandHandler(IUserRepository userRepository)
+public class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<UpdateUserCommand, ErrorOr<Updated>>
 {
     public async Task<ErrorOr<Updated>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -25,12 +26,11 @@ public class UpdateUserCommandHandler(IUserRepository userRepository)
         if (userWithSameEmail != null && userToUpdate != userWithSameEmail)
             return DomainErrors.Conflict("User");
 
-        var userUpdated = await userRepository.UpdateUser(request.UserId,
-                                                          request.Email,
-                                                          request.PhoneNumber,
-                                                          request.Adrress,
-                                                          cancellationToken);
+        await userRepository.UpdateUser(request.UserId,request.Email,request.PhoneNumber,
+                                        request.Adrress,cancellationToken);
 
-        return userUpdated;
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return new Updated();
     }
 }

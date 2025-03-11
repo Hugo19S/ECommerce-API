@@ -19,17 +19,17 @@ public class MakerRepository(ECommerceDbContext dbContext) : IMakerRepostory
 
     public async Task<List<Maker>> GetAllMaker(CancellationToken cancellationToken)
     {
-        return await dbContext.Maker.ToListAsync(cancellationToken);
+        return await dbContext.Maker.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<Maker?> GetMakerById(Guid makerId, CancellationToken cancellationToken)
     {
-        return await dbContext.Maker.FirstOrDefaultAsync(x=> x.Id == makerId, cancellationToken);
+        return await dbContext.Maker.AsNoTracking().FirstOrDefaultAsync(x=> x.Id == makerId, cancellationToken);
     }
 
     public async Task<Maker?> GetMakerByName(string name, CancellationToken cancellationToken)
     {
-        return await dbContext.Maker.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+        return await dbContext.Maker.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
     }
 
     public async Task UpdateMaker(Guid makerId, string name, CancellationToken cancellationToken)
