@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
-public class ProductController(ISender sender, IMapper mapper) : ApiController
+public class ProductController(ISender sender) : ApiController
 {
     [HttpGet()]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetProducts(CancellationToken cancellationToken)
     {
         var productsOr = await sender.Send(new GetProductsCommand(), cancellationToken);
@@ -21,6 +22,8 @@ public class ProductController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpGet("{productId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetProduct(Guid productId, CancellationToken cancellationToken)
     {
         var productOr = await sender.Send(new GetProductCommand(productId), cancellationToken);
@@ -28,28 +31,33 @@ public class ProductController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateProduct([FromBody] ProductCreateRequest request, 
                                                   CancellationToken cancellationToken)
     {
         var productCreated = await sender.Send(new CreateProductCommand(request), cancellationToken);
 
-        return productCreated.Match(v => Ok(v), Problem);
+        return productCreated.Match(v => Created("", v), Problem);
     }
 
     [HttpPut("{productId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateProduct(Guid productId,
                                             [FromBody] ProductUpdateRequest updateRequest,
                                             CancellationToken cancellationToken)
     {
         var productUpdatedOr = await sender.Send(new UpdateProductCommand(productId, updateRequest), cancellationToken);
-        return productUpdatedOr.Match(v => Ok(v), Problem);
+        return productUpdatedOr.Match(v => NoContent(), Problem);
     }
 
     [HttpDelete("{productId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteProduct(Guid productId, CancellationToken cancellationToken)
     {
         var productDeletedOr = await sender.Send(new DeleteProductCommand(productId), cancellationToken);
 
-        return productDeletedOr.Match(v => Ok(v), Problem);
+        return productDeletedOr.Match(v => NoContent(), Problem);
     }
 }

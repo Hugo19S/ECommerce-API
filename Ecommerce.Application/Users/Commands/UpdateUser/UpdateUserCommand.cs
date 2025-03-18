@@ -7,9 +7,11 @@ using MediatR;
 namespace Ecommerce.Application.Users.Commands.UpdateUser;
 
 public record UpdateUserCommand(Guid UserId,
+                                 string FirstName,
+                                 string LastName,
                                  string Email,
-                                 string PhoneNumber,
-                                 string Adrress) : IRequest<ErrorOr<Updated>>;
+                                 string? PhoneNumber,
+                                 string Address) : IRequest<ErrorOr<Updated>>;
 
 public class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<UpdateUserCommand, ErrorOr<Updated>>
@@ -27,7 +29,7 @@ public class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWor
             return DomainErrors.Conflict("User");
 
         await userRepository.UpdateUser(request.UserId,request.Email,request.PhoneNumber,
-                                        request.Adrress,cancellationToken);
+                                        request.Address,cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

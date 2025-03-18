@@ -1,7 +1,6 @@
 ﻿using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Common;
-using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
 

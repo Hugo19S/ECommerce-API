@@ -1,5 +1,11 @@
-﻿namespace Ecommerce.Application.SubCategories.Queries.GetSubCategory;
+﻿using FluentValidation;
 
-public class GetSubCategoryQueryValidator
+namespace Ecommerce.Application.SubCategories.Queries.GetSubCategory;
+
+public class GetSubCategoryQueryValidator : AbstractValidator<GetSubCategoryQuery>
 {
+    public GetSubCategoryQueryValidator()
+    {
+        RuleFor(x => x.SubCategoryId).NotEmpty().WithMessage("Subcategory ID is required.");
+    }
 }

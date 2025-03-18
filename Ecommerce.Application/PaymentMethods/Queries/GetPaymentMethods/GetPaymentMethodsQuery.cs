@@ -11,6 +11,6 @@ public class GetPaymentMethodsQueryHandler(IPaymentMethodRepository repository) 
 {
     public async Task<ErrorOr<List<PaymentMethod?>>> Handle(GetPaymentMethodsQuery request, CancellationToken cancellationToken)
     {
-        return await repository.GetAllPaymentMethod(cancellationToken); 
+        return await repository.GetAllPaymentMethod(cancellationToken);
     }
 }

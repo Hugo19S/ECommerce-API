@@ -13,6 +13,8 @@ namespace Ecommerce.Service.Controllers;
 public class PaymentController(ISender sender) : ApiController
 {
     [HttpGet("{orderId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetPayment(Guid orderId, CancellationToken cancellationToken)
     {
         var payment = await sender.Send(new GetPaymentCommand(orderId), cancellationToken);
@@ -21,6 +23,8 @@ public class PaymentController(ISender sender) : ApiController
     }
 
     [HttpPost("{orderId:guid}/{paymentMethodId:guid}")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreatePayment(Guid orderId,
                                             Guid paymentMethodId,
                                             [FromBody] PaymentRequest request,
@@ -31,10 +35,12 @@ public class PaymentController(ISender sender) : ApiController
             request.TotalPayable, request.TotalPaid, request.Note, request.InstallmentsNumber), 
             cancellationToken);
 
-        return paymentCreatedOr.Match(v => Ok(v), Problem);
+        return paymentCreatedOr.Match(v => Created("", v), Problem);
     }
     
     [HttpPost("{orderId:guid}")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreatePaymentHistory(Guid orderId,
                                             [FromBody] PaymentHistoryRequest request,
                                             CancellationToken cancellationToken)
@@ -44,6 +50,6 @@ public class PaymentController(ISender sender) : ApiController
             request.TotalPaid, request.Note), 
             cancellationToken);
 
-        return paymentCreatedOr.Match(v => Ok(v), Problem);
+        return paymentCreatedOr.Match(v => Created("", v), Problem);
     }
 }

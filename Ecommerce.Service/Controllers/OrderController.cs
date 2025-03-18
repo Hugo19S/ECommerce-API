@@ -14,6 +14,8 @@ namespace Ecommerce.Service.Controllers;
 public class OrderController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpGet("{orderId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
     {
         var order = await sender.Send(new GetOrderQuery(orderId), cancellationToken);
@@ -22,6 +24,8 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("UserOrders/{userId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetUserOrders(Guid userId, CancellationToken cancellationToken)
     {
         var order = await sender.Send(new GetUserOrdersQuery(userId), cancellationToken);
@@ -30,6 +34,8 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("OrderHistory/{orderId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetOrderHistory(Guid orderId, CancellationToken cancellationToken)
     {
         var order = await sender.Send(new GetOrderHistoryQuery(orderId), cancellationToken);
@@ -38,6 +44,8 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpPost("{userId:guid}")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateOrder(Guid userId, 
                                                 [FromBody] CreateOrderRequest orderRequest,
                                                 CancellationToken cancellationToken)
@@ -47,10 +55,12 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
                                                                       orderRequest.OrderItems),
                                                                       cancellationToken);
 
-        return orderCreatedOr.Match(v => Ok(v), Problem);
+        return orderCreatedOr.Match(v => Created("", v), Problem);
     }
     
     [HttpPost("OrderHistory/{orderId}/{statusId}")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateOrderHistory(Guid orderId, Guid statusId,
                                                        [FromBody] CreateOrderHistoryRequest orderHistoryRequest,
                                                        CancellationToken cancellationToken)
@@ -59,6 +69,6 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
                                                                                     orderHistoryRequest.Note),
                                                                                     cancellationToken);
 
-        return orderHistoryCreatedOr.Match(v => Ok(v), Problem);
+        return orderHistoryCreatedOr.Match(v => Created("", v), Problem);
     }
 }

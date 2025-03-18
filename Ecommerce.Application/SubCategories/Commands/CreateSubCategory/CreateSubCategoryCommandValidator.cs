@@ -1,5 +1,12 @@
-﻿namespace Ecommerce.Application.SubCategories.Commands.CreateSubCategory;
+﻿using FluentValidation;
 
-public class CreateSubCategoryCommandValidator
+namespace Ecommerce.Application.SubCategories.Commands.CreateSubCategory;
+
+public class CreateSubCategoryCommandValidator : AbstractValidator<CreateSubCategoryCommand>
 {
+    public CreateSubCategoryCommandValidator()
+    {
+        RuleFor(x => x.CategoryId).NotEmpty().WithMessage("Category ID is required.");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
+    }
 }

@@ -1,5 +1,11 @@
-﻿namespace Ecommerce.Application.Statuses.Commands.DeleteStatus;
+﻿using FluentValidation;
 
-public class DeleteStatusCommandValidator
+namespace Ecommerce.Application.Statuses.Commands.DeleteStatus;
+
+public class DeleteStatusCommandValidator : AbstractValidator<DeleteStatusCommand>
 {
+    public DeleteStatusCommandValidator()
+    {
+        RuleFor(x => x.StatusId).NotEmpty().WithMessage("Status ID is required.");
+    }
 }

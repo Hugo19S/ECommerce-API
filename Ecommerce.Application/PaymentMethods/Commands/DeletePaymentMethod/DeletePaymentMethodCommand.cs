@@ -14,8 +14,8 @@ public class DeletePaymentMethodCommandHandler(IPaymentMethodRepository reposito
     public async Task<ErrorOr<Deleted>> Handle(DeletePaymentMethodCommand request, CancellationToken cancellationToken)
     {
         var paymentMethodExist = await repository.GetPaymentMethodById(request.PaymentMethodId, cancellationToken);
-        
-        if (paymentMethodExist == null) 
+
+        if (paymentMethodExist == null)
             return DomainErrors.NotFound("PaymentMethod", request.PaymentMethodId);
 
         await repository.DeletePaymentMethod(request.PaymentMethodId, cancellationToken);

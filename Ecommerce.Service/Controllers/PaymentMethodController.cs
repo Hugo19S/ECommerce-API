@@ -15,15 +15,20 @@ namespace Ecommerce.Service.Controllers;
 public class PaymentMethodController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult> CreatePaymentMethod([FromBody] CreatePaymentMethodRequest paymentMethodRequest,
-                                                  CancellationToken cancellationToken)
+                                                        CancellationToken cancellationToken)
     {
-        var createdPaymentMethodOr = await sender.Send(new CreatePaymentMethodCommand(paymentMethodRequest.Name), cancellationToken);
+        var createdPaymentMethodOr = await sender.Send(new CreatePaymentMethodCommand(paymentMethodRequest.Name), 
+                                                                                      cancellationToken);
 
-        return createdPaymentMethodOr.Match(v => Ok(v), Problem);
+        return createdPaymentMethodOr.Match(v => Created("", v), Problem);
     }
 
     [HttpGet("{paymentMethodId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetPaymentMethod(Guid paymentMethodId, CancellationToken cancellationToken)
     {
         var paymentMethodOr = await sender.Send(new GetPaymentMethodQuery(paymentMethodId), cancellationToken);
@@ -34,6 +39,7 @@ public class PaymentMethodController(ISender sender, IMapper mapper) : ApiContro
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetPaymentMethods(CancellationToken cancellationToken)
     {
         var paymentMethodsOr = await sender.Send(new GetPaymentMethodsQuery(), cancellationToken);
@@ -44,20 +50,26 @@ public class PaymentMethodController(ISender sender, IMapper mapper) : ApiContro
     }
 
     [HttpDelete("{paymentMethodId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeletePaymentMethod(Guid paymentMethodId, CancellationToken cancellationToken)
     {
         var deletedPaymentMethodOr = await sender.Send(new DeletePaymentMethodCommand(paymentMethodId), cancellationToken);
 
-        return deletedPaymentMethodOr.Match(v => Ok(v), Problem);
+        return deletedPaymentMethodOr.Match(v => NoContent(), Problem);
     }
 
     [HttpPut("{paymentMethodId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult> UpdatePaymentMethod(Guid paymentMethodId,
                                                   [FromBody] UpdatePaymentMethodRequest paymentMethodRequest,
                                                   CancellationToken cancellationToken)
     {
         var updatedPaymentMethodOr = await sender.Send(new UpdatePaymentMethodCommand(paymentMethodId,
-                                                                                paymentMethodRequest.Name), cancellationToken);
-        return updatedPaymentMethodOr.Match(v => Ok(v), Problem);
+                                                                                      paymentMethodRequest.Name), 
+                                                                                      cancellationToken);
+        return updatedPaymentMethodOr.Match(v => NoContent(), Problem);
     }
 }

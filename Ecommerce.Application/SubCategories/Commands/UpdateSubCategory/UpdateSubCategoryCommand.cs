@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Ecommerce.Application.SubCategories.Commands.UpdateSubCategory;
 
-public record UpdateSubCategoryCommand(Guid SubCategoryId, string Name, string Description)
+public record UpdateSubCategoryCommand(Guid SubCategoryId, string Name, string? Description)
     : IRequest<ErrorOr<Updated>>;
 
 public class UpdateSubCategoryCommandHandler(ISubCategoryRepository repository, IUnitOfWork unitOfWork)

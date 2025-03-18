@@ -15,6 +15,7 @@ namespace Ecommerce.Service.Controllers
     public class MakerController(ISender sender, IMapper mapper) : ApiController
     {
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
 
         public async Task<ActionResult> GetMakers(CancellationToken cancellationToken)
         {
@@ -24,6 +25,8 @@ namespace Ecommerce.Service.Controllers
         }
 
         [HttpGet("{makerId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetMakers(Guid makerId, CancellationToken cancellationToken)
         {
             var makersOr = await sender.Send(new GetMakerQuery(makerId), cancellationToken);
@@ -32,30 +35,38 @@ namespace Ecommerce.Service.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult> CreateMaker([FromBody] CreateMakerRequest makerRequest, CancellationToken cancellationToken)
         {
             var makerCreatedOr = await sender.Send(new CreateMakerCommand(makerRequest.Name),
                                                    cancellationToken);
 
-            return makerCreatedOr.Match(v => Ok(v), Problem);
+            return makerCreatedOr.Match(v => Created("", v), Problem);
         }
 
         [HttpDelete("{makerId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteMaker(Guid makerId, CancellationToken cancellationToken)
         {
             var makerDeletedOr = await sender.Send(new DeleteMakerCommand(makerId), cancellationToken);
-
-            return makerDeletedOr.Match(v => Ok(v), Problem);
+            return makerDeletedOr.Match(v => NoContent(), Problem);
         }
 
         [HttpPut("{makerId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult> UpdateMaker(Guid makerId,
                                                     [FromBody] UpdateMakerRequest makerRequest,
                                                     CancellationToken cancellationToken)
         {
-            var makerDeletedOr = await sender.Send(new UpdateMakerCommand(makerId, makerRequest.Name), cancellationToken);
+            var makerDeletedOr = await sender.Send(new UpdateMakerCommand(makerId, 
+                                                                          makerRequest.Name),
+                                                                          cancellationToken);
 
-            return makerDeletedOr.Match(v => Ok(v), Problem);
+            return makerDeletedOr.Match(v => NoContent(), Problem);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Ecommerce.Application.PaymentMethods.Commands.CreatePaymentMethod;
 
 public record CreatePaymentMethodCommand(string Name) : IRequest<ErrorOr<Created>>;
 
-public class CreatePaymentMethodCommandHandler(IPaymentMethodRepository repository,IUnitOfWork unitOfWork)
+public class CreatePaymentMethodCommandHandler(IPaymentMethodRepository repository, IUnitOfWork unitOfWork)
     : IRequestHandler<CreatePaymentMethodCommand, ErrorOr<Created>>
 {
     public async Task<ErrorOr<Created>> Handle(CreatePaymentMethodCommand request, CancellationToken cancellationToken)

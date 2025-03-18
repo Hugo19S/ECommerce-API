@@ -1,5 +1,11 @@
-﻿namespace Ecommerce.Application.Users.Commands.DeleteUser;
+﻿using FluentValidation;
 
-public class DeleteUserCommandValidator
+namespace Ecommerce.Application.Users.Commands.DeleteUser;
+
+public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
 {
+    public DeleteUserCommandValidator()
+    {
+        RuleFor(x => x.UserId).NotEmpty().WithMessage("User ID is required.");
+    }
 }

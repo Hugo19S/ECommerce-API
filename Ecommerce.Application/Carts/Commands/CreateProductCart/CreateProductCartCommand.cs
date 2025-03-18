@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Ecommerce.Application.Carts.Commands.CreateProductCart;
 
-public record CreateProductCartCommand(Guid UserId, Guid ProductId, int Quanity) : IRequest<ErrorOr<Created>>;
+public record CreateProductCartCommand(Guid UserId, Guid ProductId, int Quantity) : IRequest<ErrorOr<Created>>;
 
 public class CreateProductCartCommandHandler(IUserRepository userRepository,
                                              ICartRepository cartRepository,
@@ -37,7 +37,7 @@ public class CreateProductCartCommandHandler(IUserRepository userRepository,
             Id = Guid.NewGuid(),
             CartId = cart.Id,
             ProductId = request.ProductId,
-            Quantity = request.Quanity
+            Quantity = request.Quantity
         };
 
         await cartRepository.AddProductCart(cartItem, cancellationToken);

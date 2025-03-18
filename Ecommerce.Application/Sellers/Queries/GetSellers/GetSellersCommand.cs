@@ -11,8 +11,6 @@ public class GetSellersCommandHandler(ISellerRepository repository) : IRequestHa
 {
     public async Task<ErrorOr<List<Seller>>> Handle(GetSellersCommand request, CancellationToken cancellationToken)
     {
-        var sellers = await repository.GetAllSeller(cancellationToken);
-
-        return sellers;
+        return await repository.GetAllSeller(cancellationToken);
     }
 }

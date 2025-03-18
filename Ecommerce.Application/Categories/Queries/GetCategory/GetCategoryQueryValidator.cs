@@ -1,5 +1,11 @@
-﻿namespace Ecommerce.Application.Categories.Queries.GetCategory;
+﻿using FluentValidation;
 
-public class GetCategoryQueryValidator
+namespace Ecommerce.Application.Categories.Queries.GetCategory;
+
+public class GetCategoryQueryValidator : AbstractValidator<GetCategoryQuery>
 {
+    public GetCategoryQueryValidator()
+    {
+        RuleFor(x => x.CategoryId).NotEmpty().WithMessage("Category ID is required.");
+    }
 }

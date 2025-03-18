@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Ecommerce.Application.SubCategories.Commands.CreateSubCategory;
 
-public record CreateSubCategoryCommand(string Name, string Description, Guid CategoryId): IRequest<ErrorOr<Created>>;
+public record CreateSubCategoryCommand(string Name, string? Description, Guid CategoryId): IRequest<ErrorOr<Created>>;
 
 public class CreateSubCategoryCommandHandler(ISubCategoryRepository subCategoryRepository,
                                              ICategoryRepository categoryRepository,

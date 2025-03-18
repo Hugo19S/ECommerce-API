@@ -12,6 +12,8 @@ namespace Ecommerce.Service.Controllers;
 public class CartController(ISender sender) : ApiController
 {
     [HttpGet("{userId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetProductsCart(Guid userId, CancellationToken cancellationToken)
     {
         var productsCartOr = await sender.Send(new GetPrudctsCartQuery(userId), cancellationToken);
@@ -19,6 +21,9 @@ public class CartController(ISender sender) : ApiController
     }
 
     [HttpPost("{userId:guid}")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateProductCart(Guid userId,
                                                     [FromBody] CartProductRequest request,
                                                     CancellationToken cancellationToken)
@@ -28,11 +33,14 @@ public class CartController(ISender sender) : ApiController
                                                                          request.Quantity), 
                                                                          cancellationToken);
 
-        return productCart.Match(v => Ok(v), Problem);
+        return productCart.Match(v => Created("", v), Problem);
     }
 
     [HttpPut("{cartId:guid}/{productId:guid}")]
-    public async Task<ActionResult> PutProductCart(Guid cartId,
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UpdateProductCart(Guid cartId,
                                              Guid productId,
                                              [FromBody] CartUpdateProductRequest cartUpdate,
                                              CancellationToken cancellationToken)
@@ -41,10 +49,12 @@ public class CartController(ISender sender) : ApiController
                                                                                   productId,
                                                                                   cartUpdate.Quantity),
                                                                                   cancellationToken);
-        return productCartUpdatedOr.Match(v => Ok(v), Problem);
+        return productCartUpdatedOr.Match(v => NoContent(), Problem);
     }
 
     [HttpDelete("{cartId:guid}/{productId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteProductCart(Guid cartId,
                                                       Guid productId,
                                                       CancellationToken cancellationToken)
@@ -52,6 +62,6 @@ public class CartController(ISender sender) : ApiController
         var productCartDeletedOr = await sender.Send(new DeleteProductCartCommand(cartId,
                                                                                   productId),
                                                                                   cancellationToken);
-        return productCartDeletedOr.Match(v => Ok(v), Problem);
+        return productCartDeletedOr.Match(v => NoContent(), Problem);
     }
 }

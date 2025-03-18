@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Ecommerce.Application.Orders.Commands.CreateOrderHistory;
 
-public record CreateOrderHistoryCommand(Guid OrderId, Guid StatusId, string Note) : IRequest<ErrorOr<Created>>;
+public record CreateOrderHistoryCommand(Guid OrderId, Guid StatusId, string? Note) : IRequest<ErrorOr<Created>>;
 
 public class CreateOrderHistoryCommandHandler(IOrderRepository orderRepository,
                                               IStatusRepository statusRepository,
