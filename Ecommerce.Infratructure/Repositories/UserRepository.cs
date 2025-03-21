@@ -45,11 +45,6 @@ public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
             cancellationToken);
     }
 
-    public async Task CreateUserCart(Cart cart, CancellationToken cancellationToken)
-    {
-        await dbContext.Cart.AddAsync(cart, cancellationToken);
-    }
-
     public async Task<UserRole?> GetRole(string role, CancellationToken cancellationToken)
     {
         return await dbContext.UserRoles

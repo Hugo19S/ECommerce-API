@@ -96,4 +96,9 @@ public class CartRepository(ECommerceDbContext dbContext) : ICartRepository
                        .SetProperty(n => n.Quantity, quantity),
                        cancellationToken);
     }
+
+    public async Task CreateUserCart(Cart cart, CancellationToken cancellationToken)
+    {
+        await dbContext.Cart.AddAsync(cart, cancellationToken);
+    }
 }

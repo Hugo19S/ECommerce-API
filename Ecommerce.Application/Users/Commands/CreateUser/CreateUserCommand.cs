@@ -15,6 +15,7 @@ public record CreateUserCommand(string FirstName,
                              string Address) : IRequest<ErrorOr<Created>>;
 
 public class CreateUserCommandHandler(IUserRepository userRepository,
+                                      ICartRepository cartRepository,
                                       IUnitOfWork unitOfWork) 
     : IRequestHandler<CreateUserCommand, ErrorOr<Created>>
 {
@@ -47,7 +48,7 @@ public class CreateUserCommandHandler(IUserRepository userRepository,
         };
 
         await userRepository.AddUser(createUser, cancellationToken);
-        await userRepository.CreateUserCart(cart, cancellationToken);
+        await cartRepository.CreateUserCart(cart, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Created();
     }

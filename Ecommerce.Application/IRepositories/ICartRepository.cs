@@ -6,6 +6,7 @@ namespace Ecommerce.Application.IRepositories;
 public interface ICartRepository
 {
     Task AddProductCart(CartItems cartItems, CancellationToken cancellationToken);
+    Task CreateUserCart(Cart cart, CancellationToken cancellationToken);
     Task<CartItems?> GetProductCart(Guid cartId, Guid productId, CancellationToken cancellationToken);
     Task<List<CartDto>> GetProductsCart(Guid cartId, CancellationToken cancellationToken);
     Task<Cart?> GetCartByUserId(Guid userId, CancellationToken cancellationToken);
