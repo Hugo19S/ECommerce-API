@@ -1,11 +1,10 @@
 ﻿using Ecommerce.Application.Common;
 using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
-using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
 
-namespace Ecommerce.Application.Categories.Commands.CreateCategory;
+namespace Ecommerce.Application.Categories.Commands.CreateSeller;
 
 public record CreateCategoryCommand(string Name, string? Description) : IRequest<ErrorOr<Created>>;
 

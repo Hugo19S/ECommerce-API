@@ -2,9 +2,9 @@
 
 namespace Ecommerce.Application.Sellers.Queries.GetSeller;
 
-public class GetSellerCommandValidator : AbstractValidator<GetSellerCommand>
+public class GetSellerQueryValidator : AbstractValidator<GetSellerQuery>
 {
-    public GetSellerCommandValidator()
+    public GetSellerQueryValidator()
     {
         RuleFor(x => x.SellerId).NotEmpty().WithMessage("Seller ID is required.");
     }

@@ -17,7 +17,7 @@ public class PaymentController(ISender sender) : ApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetPayment(Guid orderId, CancellationToken cancellationToken)
     {
-        var payment = await sender.Send(new GetPaymentCommand(orderId), cancellationToken);
+        var payment = await sender.Send(new GetPaymentQuery(orderId), cancellationToken);
 
         return payment.Match(Ok, Problem);
     }

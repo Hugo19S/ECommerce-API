@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Ecommerce.Application.Categories.Commands.CreateCategory;
+using Ecommerce.Application.Categories.Commands.CreateSeller;
 using Ecommerce.Application.Categories.Commands.DeleteCategory;
 using Ecommerce.Application.Categories.Commands.PatchCategory;
 using Ecommerce.Application.Categories.Commands.UpdateCategory;

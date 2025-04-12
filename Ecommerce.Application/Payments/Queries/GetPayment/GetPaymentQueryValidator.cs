@@ -2,9 +2,9 @@
 
 namespace Ecommerce.Application.Payments.Queries.GetPayment;
 
-public class GetPaymentCommandValidator : AbstractValidator<GetPaymentCommand>
+public class GetPaymentQueryValidator : AbstractValidator<GetPaymentQuery>
 {
-    public GetPaymentCommandValidator()
+    public GetPaymentQueryValidator()
     {
         RuleFor(x => x.OrderId).NotEmpty().WithMessage("Order ID is required.");
     }

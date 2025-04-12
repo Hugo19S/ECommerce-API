@@ -17,7 +17,7 @@ namespace Ecommerce.Service.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> GetSellers(CancellationToken cancellationToken)
         {
-            var sellersOr = await sender.Send(new GetSellersCommand(), cancellationToken);
+            var sellersOr = await sender.Send(new GetSellersQuery(), cancellationToken);
 
             return sellersOr.Match(v => Ok(mapper.Map<List<SellerResponse>>(v)), Problem);
         }
@@ -27,7 +27,7 @@ namespace Ecommerce.Service.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetSeller(Guid sellerId, CancellationToken cancellationToken)
         {
-            var sellerOr = await sender.Send(new GetSellerCommand(sellerId), cancellationToken);
+            var sellerOr = await sender.Send(new GetSellerQuery(sellerId), cancellationToken);
 
             return sellerOr.Match(v => Ok(mapper.Map<SellerResponse>(v)), Problem);
         }

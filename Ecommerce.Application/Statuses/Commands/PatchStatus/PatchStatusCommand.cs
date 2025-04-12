@@ -15,11 +15,11 @@ public class PatchStatusCommandHandler(IStatusRepository statusRepository, IUnit
 {
     public async Task<ErrorOr<Updated>> Handle(PatchStatusCommand request, CancellationToken cancellationToken)
     {
-        if (request.JsonPatch.Operations.Any(op => op.OperationType is OperationType.Move or OperationType.Copy))
-            return DomainErrors.OperationUnauthorized();
-
         if (request.JsonPatch is null || request.JsonPatch.Operations.Count == 0)
             return DomainErrors.JSonPatchNotFound();
+
+        if (request.JsonPatch.Operations.Any(op => op.OperationType is OperationType.Move or OperationType.Copy))
+            return DomainErrors.OperationUnauthorized();
 
         var status = await statusRepository.GetStatusById(request.StatusId, cancellationToken);
 

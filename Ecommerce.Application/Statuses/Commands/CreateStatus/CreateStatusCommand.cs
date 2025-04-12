@@ -9,7 +9,8 @@ namespace Ecommerce.Application.Statuses.Commands.CreateStatus;
 
 public record CreateStatusCommand(string Name, string Type, string? Description) : IRequest<ErrorOr<Created>>;
 
-public class CreateStatusCommandHandler(IStatusRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<CreateStatusCommand, ErrorOr<Created>>
+public class CreateStatusCommandHandler(IStatusRepository repository, IUnitOfWork unitOfWork)
+    : IRequestHandler<CreateStatusCommand, ErrorOr<Created>>
 {
     public async Task<ErrorOr<Created>> Handle(CreateStatusCommand request, CancellationToken cancellationToken)
     {

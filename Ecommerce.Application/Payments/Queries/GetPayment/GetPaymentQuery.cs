@@ -1,18 +1,17 @@
 ﻿using Ecommerce.Application.CustomErrors;
 using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Common;
-using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
 
 namespace Ecommerce.Application.Payments.Queries.GetPayment;
 
-public record GetPaymentCommand(Guid OrderId) : IRequest<ErrorOr<PaymentDto>>;
-public class GetPaymentCommandHandler(IPaymentRepository paymentRepository,
+public record GetPaymentQuery(Guid OrderId) : IRequest<ErrorOr<PaymentDto>>;
+public class GetPaymentQueryHandler(IPaymentRepository paymentRepository,
                                       IOrderRepository orderRepository)
-    : IRequestHandler<GetPaymentCommand, ErrorOr<PaymentDto>>
+    : IRequestHandler<GetPaymentQuery, ErrorOr<PaymentDto>>
 {
-    public async Task<ErrorOr<PaymentDto>> Handle(GetPaymentCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PaymentDto>> Handle(GetPaymentQuery request, CancellationToken cancellationToken)
     {
         var order = await orderRepository.GetOrderById(request.OrderId, cancellationToken);
 
