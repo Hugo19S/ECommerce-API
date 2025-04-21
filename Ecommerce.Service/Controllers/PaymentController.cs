@@ -4,12 +4,14 @@ using Ecommerce.Application.Payments.Queries.GetPayment;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Roles = "Costumer")]
 public class PaymentController(ISender sender) : ApiController
 {
     [HttpGet("{orderId:guid}")]
@@ -39,6 +41,7 @@ public class PaymentController(ISender sender) : ApiController
     }
     
     [HttpPost("{orderId:guid}")]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreatePaymentHistory(Guid orderId,

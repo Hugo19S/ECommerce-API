@@ -6,11 +6,13 @@ using Ecommerce.Application.Orders.Queries.GetOrderHistory;
 using Ecommerce.Application.Orders.Queries.GetUserOrders;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Roles = "Costumer")]
 public class OrderController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpGet("{orderId:guid}")]
@@ -59,6 +61,7 @@ public class OrderController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpPost("OrderHistory/{orderId}/{statusId}")]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateOrderHistory(Guid orderId, Guid statusId,

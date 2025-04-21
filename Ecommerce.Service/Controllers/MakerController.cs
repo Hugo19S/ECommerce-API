@@ -4,14 +4,15 @@ using Ecommerce.Application.Makers.Commands.DeleteMaker;
 using Ecommerce.Application.Makers.Commands.UpdateMaker;
 using Ecommerce.Application.Makers.Queries.GetMaker;
 using Ecommerce.Application.Makers.Queries.GetMakers;
-using Ecommerce.Domain.Entities;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers
 {
     [Route("/api/[controller]")]
+    [Authorize(Roles = "Manager")]
     public class MakerController(ISender sender, IMapper mapper) : ApiController
     {
         [HttpGet]
@@ -25,9 +26,10 @@ namespace Ecommerce.Service.Controllers
         }
 
         [HttpGet("{makerId:guid}")]
+        [Authorize(Roles = "Costumer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetMakers(Guid makerId, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetMaker(Guid makerId, CancellationToken cancellationToken)
         {
             var makersOr = await sender.Send(new GetMakerQuery(makerId), cancellationToken);
 

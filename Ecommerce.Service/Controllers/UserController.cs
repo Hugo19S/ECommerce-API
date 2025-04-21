@@ -6,6 +6,7 @@ using Ecommerce.Application.Users.Queries.GetUser;
 using Ecommerce.Application.Users.Queries.GetUsers;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
@@ -31,6 +32,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("{userId:guid}")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetUser(Guid userId, CancellationToken cancellationToken) 
@@ -42,6 +44,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetUsers(CancellationToken cancellationToken) 
     {
@@ -52,6 +55,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpPut("{userId}")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -70,6 +74,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpDelete("{userId:guid}")]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)

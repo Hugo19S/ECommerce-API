@@ -1,19 +1,21 @@
-﻿using AutoMapper;
-using Ecommerce.Application.Products.Commands.CreateProduct;
+﻿using Ecommerce.Application.Products.Commands.CreateProduct;
 using Ecommerce.Application.Products.Commands.DeleteProduct;
 using Ecommerce.Application.Products.Commands.UpdateProduct;
 using Ecommerce.Application.Products.Queries.GetProduct;
 using Ecommerce.Application.Products.Queries.GetProducts;
 using Ecommerce.Domain.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Roles = "Manager")]
 public class ProductController(ISender sender) : ApiController
 {
     [HttpGet()]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetProducts(CancellationToken cancellationToken)
     {
@@ -22,6 +24,7 @@ public class ProductController(ISender sender) : ApiController
     }
 
     [HttpGet("{productId}")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetProduct(Guid productId, CancellationToken cancellationToken)

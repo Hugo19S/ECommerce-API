@@ -7,12 +7,14 @@ using Ecommerce.Application.Statuses.Queries.GetStatuses;
 using Ecommerce.Domain.Entities;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Roles = "Manager")]
 public class StatusController(ISender sender ) : ApiController
 {
     [HttpGet]
@@ -25,6 +27,7 @@ public class StatusController(ISender sender ) : ApiController
     }
     
     [HttpGet("{statusId:guid}")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetStatus(Guid statusId, CancellationToken cancellationToken)

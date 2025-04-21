@@ -7,11 +7,13 @@ using Ecommerce.Application.PaymentMethods.Queries.GetPaymentMethods;
 using Ecommerce.Service.Contracts;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Roles = "Manager")]
 public class PaymentMethodController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpPost]
@@ -27,6 +29,7 @@ public class PaymentMethodController(ISender sender, IMapper mapper) : ApiContro
     }
 
     [HttpGet("{paymentMethodId:guid}")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetPaymentMethod(Guid paymentMethodId, CancellationToken cancellationToken)
@@ -39,6 +42,7 @@ public class PaymentMethodController(ISender sender, IMapper mapper) : ApiContro
     }
 
     [HttpGet]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetPaymentMethods(CancellationToken cancellationToken)
     {

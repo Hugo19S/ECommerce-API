@@ -6,11 +6,13 @@ using Ecommerce.Application.Sellers.Queries.GetSeller;
 using Ecommerce.Application.Sellers.Queries.GetSellers;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers
 {
     [Route("/api/[controller]")]
+    [Authorize(Roles = "Manager")]
     public class SellerController(ISender sender, IMapper mapper) : ApiController
     {
         [HttpGet]
@@ -23,6 +25,7 @@ namespace Ecommerce.Service.Controllers
         }
         
         [HttpGet("{sellerId:guid}")]
+        [Authorize(Roles = "Costumer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetSeller(Guid sellerId, CancellationToken cancellationToken)

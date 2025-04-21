@@ -4,11 +4,13 @@ using Ecommerce.Application.Carts.Commands.UpdateProductCart;
 using Ecommerce.Application.Carts.Queries.GetPrudctsCart;
 using Ecommerce.Service.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Roles = "Costumer")]
 public class CartController(ISender sender) : ApiController
 {
     [HttpGet("{userId:guid}")]

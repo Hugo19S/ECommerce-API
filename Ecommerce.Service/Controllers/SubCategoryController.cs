@@ -5,17 +5,19 @@ using Ecommerce.Application.SubCategories.Commands.UpdateSubCategory;
 using Ecommerce.Application.SubCategories.Queries.GetSubCategories;
 using Ecommerce.Application.SubCategories.Queries.GetSubCategory;
 using Ecommerce.Service.Contracts;
-using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Service.Controllers;
 
 [Route("/api/[controller]")]
+[Authorize(Roles = "Manager")]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
 public class SubCategoryController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpGet("{categoryId:guid}/subcategories")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetSubCategoriesByCategory(Guid categoryId, CancellationToken cancellationToken)
     {
@@ -26,6 +28,7 @@ public class SubCategoryController(ISender sender, IMapper mapper) : ApiControll
     }
     
     [HttpGet("{subCategoryId:guid}")]
+    [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetSubCategory(Guid subCategoryId, CancellationToken cancellationToken)
     {
