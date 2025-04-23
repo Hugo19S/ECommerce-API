@@ -26,8 +26,6 @@ public class CreateUserCommandHandler(IUserRepository userRepository,
         if (user != null)
             return DomainErrors.Conflict("User");
 
-        var role = await userRepository.GetRole("Customer", cancellationToken);
-
         var createUser = new User
         {
             Id = Guid.NewGuid(),
@@ -37,7 +35,6 @@ public class CreateUserCommandHandler(IUserRepository userRepository,
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
-            UserRoleId = role!.Id,
             CreatedAt = DateTime.UtcNow
         };
 

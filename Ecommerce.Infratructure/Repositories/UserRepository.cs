@@ -1,6 +1,5 @@
 ﻿using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
-using ErrorOr;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Infratructure.Repositories;
@@ -43,11 +42,5 @@ public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
             .SetProperty(p => p.PhoneNumber, phoneNumber)
             .SetProperty(p => p.Address, address),
             cancellationToken);
-    }
-
-    public async Task<UserRole?> GetRole(string role, CancellationToken cancellationToken)
-    {
-        return await dbContext.UserRoles
-                        .FirstOrDefaultAsync(x => x.Name == role, cancellationToken);
     }
 }

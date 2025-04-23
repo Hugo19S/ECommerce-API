@@ -3,7 +3,6 @@
 public class User
 {
     public Guid Id { get; set; }
-    public Guid UserRoleId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
@@ -13,5 +12,4 @@ public class User
     public string? AlternativeAddress { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
-    public UserRole UserRole { get; set; }
 }
