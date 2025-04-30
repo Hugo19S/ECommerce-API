@@ -15,7 +15,6 @@ public class GetUsersQueryTest
             new User
             {
                 Id = Guid.NewGuid(),
-                UserRoleId = Guid.NewGuid(),
                 FirstName = "Test",
                 LastName = "Test",
                 Email = "Test@test.com",
@@ -26,12 +25,14 @@ public class GetUsersQueryTest
         ];
         
         var mockUserRepository = new Mock<IUserRepository>();
-        mockUserRepository.Setup(x => x.GetAllUser(It.IsAny<CancellationToken>()))
+        mockUserRepository.Setup(x => x.GetAllUser(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(users);
 
-        GetUsersQueryHandler handler = new(mockUserRepository.Object);
+        var mockCacheRepository = new Mock<ICacheRepository>();
 
-        GetUsersQuery request = new();
+        GetUsersQueryHandler handler = new(mockUserRepository.Object, mockCacheRepository.Object);
+
+        GetUsersQuery request = new(It.IsAny<int>(), It.IsAny<int>());
 
         var getUserResponse = await handler.Handle(request, It.IsAny<CancellationToken>());
 

@@ -42,8 +42,6 @@ public class CreateUserCommandTest
     public async void CreateUserCommand_Return_Created() 
     {
         var mockUserRepository = new Mock<IUserRepository>();
-        mockUserRepository.Setup(x => x.GetRole(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync( new UserRole());
         
         mockUserRepository.Setup(x => x.AddUser(new User(), It.IsAny<CancellationToken>()));
 

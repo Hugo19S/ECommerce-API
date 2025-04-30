@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Infratructure.Repositories;
@@ -10,9 +11,13 @@ public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
     {
         await dbContext.User.AddAsync(user, cancellationToken);
     }
-    public async Task<List<User>> GetAllUser(CancellationToken cancellationToken)
+    public async Task<List<User>> GetAllUser(int page, int limit, CancellationToken cancellationToken)
     {
+        var skip = (page - 1) * limit;
+
         return await dbContext.User
+            .Skip(skip)
+            .Take(limit)
             .OrderBy(x => x.FirstName)
             .ThenBy(x => x.LastName)
             .ToListAsync(cancellationToken);

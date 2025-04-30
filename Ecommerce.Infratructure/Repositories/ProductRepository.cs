@@ -49,47 +49,6 @@ public class ProductRepository(ECommerceDbContext dbContext) : IProductRepositor
 
     public async Task<List<ProductDto>> GetAllProduct(CancellationToken cancellationToken)
     {
-        var query = dbContext.Product
-        .AsNoTracking()
-        .GroupJoin(
-            dbContext.ProductPrice.AsNoTracking(),
-            p => p.Id,
-            pp => pp.ProductId,
-            (p, productPrices) => new { Product = p, ProductPrices = productPrices }
-        )
-        .SelectMany(
-            x => x.ProductPrices.OrderByDescending(pp => pp.CreatedAt).Take(1).DefaultIfEmpty(),
-            (x, latestPrice) => new { x.Product, LatestPrice = latestPrice }
-        )
-        .GroupJoin(
-            dbContext.ProductDiscount.AsNoTracking(),
-            x => x.Product.Id,
-            pd => pd.ProductId,
-            (x, productDiscounts) => new { x.Product, x.LatestPrice, ProductDiscounts = productDiscounts }
-        )
-        .SelectMany(
-            x => x.ProductDiscounts.OrderByDescending(pd => pd.CreatedAt).Take(1).DefaultIfEmpty(),
-            (x, latestDiscount) => new ProductDto
-            {
-                Id = x.Product.Id,
-                Name = x.Product.Name,
-                Sku = x.Product.Sku,
-                Description = x.Product.Description,
-                Model = x.Product.Model,
-                Seller = x.Product.Seller.Name,
-                Maker = x.Product.Maker.Name,
-                SubCategory = x.Product.SubCategory.Name,
-                IsActive = x.Product.IsActive,
-                Price = x.LatestPrice != null ? x.LatestPrice.Price : 0,
-                Discount = latestDiscount != null ? latestDiscount.Discount : 0,
-                Images = dbContext.ProductImage
-                          .Where(img => img.ProductId == x.Product.Id)
-                          .Select(img => new ImageDto { Id = img.Id, Uri = img.Uri })
-                          .ToList()
-            });
-
-        var newResult = await query.ToListAsync(cancellationToken);
-
         return await dbContext.Product
             .AsNoTracking()
             .Select(p => new ProductDto

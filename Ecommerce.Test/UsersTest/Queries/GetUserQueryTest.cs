@@ -12,8 +12,9 @@ public class GetUserQueryTest
     public async void GetUserQuery_Return_NotFound()
     {
         var mockUserRepository = new Mock<IUserRepository>();
+        var mockCacheRepository = new Mock<ICacheRepository>();
 
-        GetUserQueryHandler handler = new(mockUserRepository.Object);
+        GetUserQueryHandler handler = new(mockUserRepository.Object, mockCacheRepository.Object);
 
         GetUserQuery request = new(It.IsAny<Guid>());
 
@@ -30,7 +31,6 @@ public class GetUserQueryTest
         User user = new() 
         {
             Id = Guid.NewGuid(),
-            UserRoleId = Guid.NewGuid(),
             FirstName = "Test",
             LastName = "Test",
             Email = "Test@test.com",
@@ -42,7 +42,9 @@ public class GetUserQueryTest
         mockUserRepository.Setup(x => x.GetUserById(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
-        GetUserQueryHandler handler = new(mockUserRepository.Object);
+        var mockCacheRepository = new Mock<ICacheRepository>();
+
+        GetUserQueryHandler handler = new(mockUserRepository.Object, mockCacheRepository.Object);
 
         GetUserQuery request = new(It.IsAny<Guid>());
 

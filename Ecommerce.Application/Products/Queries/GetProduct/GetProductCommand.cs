@@ -8,13 +8,23 @@ namespace Ecommerce.Application.Products.Queries.GetProduct;
 
 public record GetProductCommand(Guid ProductId) : IRequest<ErrorOr<ProductDto>>;
 
-public class GetProductCommandHandler(IProductRepository productRepository)
+public class GetProductCommandHandler(IProductRepository productRepository, ICacheRepository cache)
     : IRequestHandler<GetProductCommand, ErrorOr<ProductDto>>
 {
     public async Task<ErrorOr<ProductDto>> Handle(GetProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await productRepository.GetProductById(request.ProductId, cancellationToken);
+        var product = await cache.GetCacheValueAsync<ProductDto>($"{request.ProductId}", cancellationToken);
 
-        return product is not null ? product : DomainErrors.NotFound("Product", request.ProductId);
+        if (product != null)
+            return product;
+
+        product = await productRepository.GetProductById(request.ProductId, cancellationToken);
+
+        if (product == null) 
+            return DomainErrors.NotFound("Product", request.ProductId);
+
+        await cache.SetCacheValue($"{request.ProductId}", product, cancellationToken);
+
+        return product;
     }
 }

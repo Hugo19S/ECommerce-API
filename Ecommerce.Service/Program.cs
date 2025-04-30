@@ -51,7 +51,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

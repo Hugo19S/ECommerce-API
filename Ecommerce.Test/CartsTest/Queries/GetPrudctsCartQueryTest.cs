@@ -39,7 +39,6 @@ public class GetPrudctsCartQueryTest
             Password = BCrypt.Net.BCrypt.HashPassword("Password"),
             PhoneNumber = "PhoneNumber",
             Address = "Address",
-            UserRoleId = It.IsAny<Guid>(),
             CreatedAt = DateTime.UtcNow
         };
 
@@ -73,7 +72,6 @@ public class GetPrudctsCartQueryTest
             Password = BCrypt.Net.BCrypt.HashPassword("Password"),
             PhoneNumber = "PhoneNumber",
             Address = "Address",
-            UserRoleId = It.IsAny<Guid>(),
             CreatedAt = DateTime.UtcNow
         };
 

@@ -46,11 +46,11 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     [HttpGet]
     [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> GetUsers(CancellationToken cancellationToken) 
+    public async Task<ActionResult> GetUsers([FromQuery] PaginationRequest request, CancellationToken cancellationToken) 
     {
-        var users = await sender.Send(new GetUsersQuery(), cancellationToken);
-        return users.Match(
-            v => Ok(mapper.Map<List<UserResponse>>(v)), Problem);
+        var users = await sender.Send(new GetUsersQuery(request.Page, request.Limit), cancellationToken);
+
+        return users.Match(v => Ok(mapper.Map<List<UserResponse>>(v)), Problem);
 
     }
 

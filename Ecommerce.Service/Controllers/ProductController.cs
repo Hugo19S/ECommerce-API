@@ -4,6 +4,7 @@ using Ecommerce.Application.Products.Commands.UpdateProduct;
 using Ecommerce.Application.Products.Queries.GetProduct;
 using Ecommerce.Application.Products.Queries.GetProducts;
 using Ecommerce.Domain.Common;
+using Ecommerce.Service.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ public class ProductController(ISender sender) : ApiController
     [HttpGet()]
     [Authorize(Roles = "Costumer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> GetProducts(CancellationToken cancellationToken)
+    public async Task<ActionResult> GetProducts([FromQuery] PaginationRequest request, CancellationToken cancellationToken)
     {
-        var productsOr = await sender.Send(new GetProductsCommand(), cancellationToken);
+        var productsOr = await sender.Send(new GetProductsCommand(request.Page, request.Limit), cancellationToken);
         return productsOr.Match(Ok, Problem);
     }
 
