@@ -12,8 +12,9 @@ public class GetProductCommandTest
     public async void GetProductCommand_Return_NotFound()
     {
         var mockProductRepository = new Mock<IProductRepository>();
+        var mockCacheRepository = new Mock<ICacheRepository>();
 
-        GetProductCommandHandler handler = new(mockProductRepository.Object);
+        GetProductCommandHandler handler = new(mockProductRepository.Object, mockCacheRepository.Object);
 
         GetProductCommand request = new(It.IsAny<Guid>());
 
@@ -41,10 +42,12 @@ public class GetProductCommandTest
         };
 
         var mockProductRepository = new Mock<IProductRepository>();
+        var mockCacheRepository = new Mock<ICacheRepository>();
+
         mockProductRepository.Setup(x => x.GetProductById(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(product);
 
-        GetProductCommandHandler handler = new(mockProductRepository.Object);
+        GetProductCommandHandler handler = new(mockProductRepository.Object, mockCacheRepository.Object);
 
         GetProductCommand request = new(It.IsAny<Guid>());
 
