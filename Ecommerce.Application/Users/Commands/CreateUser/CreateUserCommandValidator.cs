@@ -10,6 +10,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required.");
         RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required.");
         RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.");
-        RuleFor(x => x.Address).NotEmpty().WithMessage("Address is required.");
+        //RuleFor(x => x.Address).NotEmpty().WithMessage("Address is required.");
     }
 }

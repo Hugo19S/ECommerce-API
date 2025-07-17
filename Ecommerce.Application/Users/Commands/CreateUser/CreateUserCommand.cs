@@ -12,7 +12,7 @@ public record CreateUserCommand(string FirstName,
                              string Email,
                              string Password,
                              string? PhoneNumber,
-                             string Address) : IRequest<ErrorOr<Created>>;
+                             string? Address) : IRequest<ErrorOr<Created>>;
 
 public class CreateUserCommandHandler(IUserRepository userRepository,
                                       ICartRepository cartRepository,
