@@ -17,7 +17,7 @@ namespace Ecommerce.Service.Controllers;
 public class SubCategoryController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpGet("{categoryId:guid}/subcategories")]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetSubCategoriesByCategory(Guid categoryId, CancellationToken cancellationToken)
     {
@@ -28,7 +28,7 @@ public class SubCategoryController(ISender sender, IMapper mapper) : ApiControll
     }
     
     [HttpGet("{subCategoryId:guid}")]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetSubCategory(Guid subCategoryId, CancellationToken cancellationToken)
     {

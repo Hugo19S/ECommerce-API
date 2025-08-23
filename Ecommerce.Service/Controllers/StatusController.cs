@@ -27,7 +27,7 @@ public class StatusController(ISender sender ) : ApiController
     }
     
     [HttpGet("{statusId:guid}")]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetStatus(Guid statusId, CancellationToken cancellationToken)

@@ -16,7 +16,7 @@ namespace Ecommerce.Service.Controllers;
 public class ProductController(ISender sender) : ApiController
 {
     [HttpGet()]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetProducts([FromQuery] PaginationRequest request, CancellationToken cancellationToken)
     {
@@ -25,7 +25,7 @@ public class ProductController(ISender sender) : ApiController
     }
 
     [HttpGet("{productId}")]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetProduct(Guid productId, CancellationToken cancellationToken)

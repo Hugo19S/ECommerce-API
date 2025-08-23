@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Application.Common;
 using Ecommerce.Application.IRepositories;
+using Ecommerce.Domain.AppSettings;
 using Ecommerce.Infratructure.Repositories;
 
 //using Ecommerce.Infratructure.Migrations.Repositories;
@@ -16,7 +17,7 @@ public static class DependencyInjections
     {
         services.AddDbContext<ECommerceDbContext>(option => 
             option.UseNpgsql(configuration.GetConnectionString("ECommerce1")));
-
+        services.Configure<KeycloakSettings>(configuration.GetSection("Keycloak"));
         services.AddScoped<ICartRepository, CartRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IMakerRepostory, MakerRepository>();

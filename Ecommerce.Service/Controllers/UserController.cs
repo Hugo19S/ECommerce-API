@@ -32,7 +32,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("{userId:guid}")]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetUser(Guid userId, CancellationToken cancellationToken) 
@@ -55,7 +55,7 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpPut("{userId}")]
-    [Authorize(Roles = "Costumer")]
+    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]

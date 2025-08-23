@@ -26,7 +26,7 @@ namespace Ecommerce.Service.Controllers
         }
 
         [HttpGet("{makerId:guid}")]
-        [Authorize(Roles = "Costumer")]
+        [Authorize(Roles = "Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetMaker(Guid makerId, CancellationToken cancellationToken)

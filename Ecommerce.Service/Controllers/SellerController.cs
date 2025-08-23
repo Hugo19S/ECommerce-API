@@ -25,7 +25,7 @@ namespace Ecommerce.Service.Controllers
         }
         
         [HttpGet("{sellerId:guid}")]
-        [Authorize(Roles = "Costumer")]
+        [Authorize(Roles = "Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetSeller(Guid sellerId, CancellationToken cancellationToken)

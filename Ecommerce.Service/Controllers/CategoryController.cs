@@ -19,7 +19,7 @@ namespace Ecommerce.Service.Controllers
     public class CategoryController(ISender sender, IMapper mapper) : ApiController
     {
         [HttpGet]
-        [Authorize(Roles = "Costumer")]
+        [Authorize(Roles = "Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> GetCategories(CancellationToken cancellationToken)
         {
@@ -29,7 +29,7 @@ namespace Ecommerce.Service.Controllers
         }
         
         [HttpGet("{categoryId:guid}")]
-        [Authorize(Roles = "Costumer")]
+        [Authorize(Roles = "Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetCategory(Guid categoryId, CancellationToken cancellationToken)

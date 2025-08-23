@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
-[Authorize(Roles = "Costumer")]
+[Authorize(Roles = "Customer")]
 public class OrderController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpGet("{orderId:guid}")]

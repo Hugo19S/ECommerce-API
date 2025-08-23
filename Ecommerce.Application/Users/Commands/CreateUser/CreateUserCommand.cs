@@ -21,10 +21,14 @@ public class CreateUserCommandHandler(IUserRepository userRepository,
 {
     public async Task<ErrorOr<Created>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+
+
         var user = await userRepository.GetUserByEmail(request.Email, cancellationToken);
 
         if (user != null)
             return DomainErrors.Conflict("User");
+
+
 
         var createUser = new User
         {

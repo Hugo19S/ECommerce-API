@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
-[Authorize(Roles = "Costumer")]
+[Authorize(Roles = "Customer")]
 public class PaymentController(ISender sender) : ApiController
 {
     [HttpGet("{orderId:guid}")]
