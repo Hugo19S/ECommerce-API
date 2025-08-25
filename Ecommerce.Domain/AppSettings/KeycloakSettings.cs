@@ -8,6 +8,7 @@
         public string ClientId { get; set; } = string.Empty;
         public string Authority { get; set; } = string.Empty;
         public string TokenEndpoint { get; set; } = string.Empty;
+        public string UserEndpoint { get; set; } = string.Empty;
         public string UserApiBase { get; set; } = string.Empty;
     }
 }

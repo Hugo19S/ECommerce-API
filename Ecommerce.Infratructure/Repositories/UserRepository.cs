@@ -3,8 +3,7 @@ using Ecommerce.Domain.AppSettings;
 using Ecommerce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
-using System.Runtime;
+using System.Text;
 using System.Text.Json;
 
 namespace Ecommerce.Infratructure.Repositories;
@@ -53,41 +52,77 @@ public class UserRepository(ECommerceDbContext dbContext, IOptions<KeycloakSetti
             cancellationToken);
     }
 
-    public Task<string> AddUserToKeycloak(User user, CancellationToken cancellationToken)
+    //keycloak
+    public async Task<Guid> AddUserToKeycloak(UserKeycloak user, HttpClient http, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+
+        var userRequest = new HttpRequestMessage(HttpMethod.Post, options.Value.UserEndpoint)
+        {
+            Content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json")
+        };
+
+        var userResponse = await http.SendAsync(userRequest, cancellationToken);
+
+        var responseBody = await userResponse.Content.ReadAsStringAsync(cancellationToken);
+        Console.WriteLine("Response body: " + responseBody);
+
+        userResponse.EnsureSuccessStatusCode();
+
+        string locationHeader = userResponse.Headers.Location!.ToString();
+
+        return Guid.Parse(locationHeader[(locationHeader.LastIndexOf('/') + 1)..]);
     }
 
-    public Task<string> GetUserKeycloakToken(User user, CancellationToken cancellationToken)
+    public async Task<string> GetUserAdminKeycloakToken(HttpClient http, CancellationToken cancellationToken)
     {
-        /*var tokenRequest = new HttpRequestMessage(HttpMethod.Post, $"{keycloakUrl}/realms/{realm}/protocol/openid-connect/token")
+        var keycloakSettings = options.Value;
+
+        var tokenRequest = new HttpRequestMessage(HttpMethod.Post, keycloakSettings.TokenEndpoint)
         {
             Content = new FormUrlEncodedContent(
             [
                 new KeyValuePair<string, string>("client_id", "public-client"),
-                new KeyValuePair<string, string>("username", adminUser),
-                new KeyValuePair<string, string>("password", adminPass),
+                new KeyValuePair<string, string>("username", keycloakSettings.AdminUsername),
+                new KeyValuePair<string, string>("password", keycloakSettings.AdminPassword),
                 new KeyValuePair<string, string>("grant_type", "password")
             ])
         };
 
-        var tokenResponse = await http.SendAsync(tokenRequest);
+        var tokenResponse = await http.SendAsync(tokenRequest, cancellationToken);
         tokenResponse.EnsureSuccessStatusCode();
 
-        using var tokenJson = JsonDocument.Parse(await tokenResponse.Content.ReadAsStringAsync());
-        string token = tokenJson.RootElement.GetProperty("access_token").GetString();
-        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);*/
-        throw new NotImplementedException();
+        using var tokenJson = JsonDocument.Parse(await tokenResponse.Content.ReadAsStringAsync(cancellationToken));
+        string token = tokenJson.RootElement.GetProperty("access_token").GetString()!;
+        return token;
     }
 
-    public Task AssignRoleToKeycloakUser(string userId, string roleName, CancellationToken cancellationToken)
+    public async Task AssignRoleToKeycloakUser(Guid userKeycloakId, string role, HttpClient http, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        var roleResponse = await http.GetAsync($"{options.Value.UserApiBase}/roles/{role}", cancellationToken);
+        roleResponse.EnsureSuccessStatusCode();
 
-    public Task SetKeycloakUserPassword(string userId, string newPassword, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        var roleJsonString = await roleResponse.Content.ReadAsStringAsync(cancellationToken);
+        var roleDoc = JsonDocument.Parse(roleJsonString);
+        var roleId = roleDoc.RootElement.GetProperty("id").GetString();
+        var roleName = roleDoc.RootElement.GetProperty("name").GetString();
+
+        var roleToAdd = new[]
+        {
+            new{
+                id = roleId,
+                name = roleName,
+            }
+        };
+
+        var roleAssignRequest = new HttpRequestMessage(
+            HttpMethod.Post,
+            $"{options.Value.UserApiBase}/users/{userKeycloakId}/role-mappings/realm")
+        {
+            Content = new StringContent(JsonSerializer.Serialize(roleToAdd), Encoding.UTF8, "application/json")
+        };
+
+        var assignResponse = await http.SendAsync(roleAssignRequest, cancellationToken);
+        assignResponse.EnsureSuccessStatusCode();
     }
 
     public Task<string> AuthenticateUser(string username, string password, CancellationToken cancellationToken)
