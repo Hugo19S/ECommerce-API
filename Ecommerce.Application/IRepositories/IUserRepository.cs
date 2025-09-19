@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Domain.AppSettings;
 using Ecommerce.Domain.Entities;
+using ErrorOr;
 
 namespace Ecommerce.Application.IRepositories;
 
@@ -13,8 +14,7 @@ public interface IUserRepository
     Task DeleteUser(Guid userId, CancellationToken cancellationToken);
 
     //Keycloack
-    Task<Guid> AddUserToKeycloak(UserKeycloak user, HttpClient http, CancellationToken cancellationToken);
-    Task<string> GetUserAdminKeycloakToken(HttpClient http, CancellationToken cancellationToken);
-    Task AssignRoleToKeycloakUser(Guid userKeycloakId, string role, HttpClient http, CancellationToken cancellationToken);
-    Task<string> AuthenticateUser(string username, string password, CancellationToken cancellationToken);
+    Task<Guid> AddUserToKeycloak(UserKeycloak user, KeycloakSettings keycloakSettings, HttpClient http, CancellationToken cancellationToken);
+    Task<ErrorOr<string>> GetUserKeycloakToken(HttpClient http, KeycloakSettings keycloakSettings, CancellationToken cancellationToken);
+    Task AssignRoleToKeycloakUser(Guid userKeycloakId, string role, HttpClient http, KeycloakSettings keycloakSettings, CancellationToken cancellationToken);
 }

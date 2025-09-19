@@ -1,14 +1,15 @@
-﻿using Ecommerce.Application.IRepositories;
+﻿using Ecommerce.Application.CustomErrors;
+using Ecommerce.Application.IRepositories;
 using Ecommerce.Domain.AppSettings;
 using Ecommerce.Domain.Entities;
+using ErrorOr;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 
 namespace Ecommerce.Infratructure.Repositories;
 
-public class UserRepository(ECommerceDbContext dbContext, IOptions<KeycloakSettings> options) : IUserRepository
+public class UserRepository(ECommerceDbContext dbContext) : IUserRepository
 {
     public async Task AddUser(User user, CancellationToken cancellationToken)
     {
@@ -53,10 +54,13 @@ public class UserRepository(ECommerceDbContext dbContext, IOptions<KeycloakSetti
     }
 
     //keycloak
-    public async Task<Guid> AddUserToKeycloak(UserKeycloak user, HttpClient http, CancellationToken cancellationToken)
+    public async Task<Guid> AddUserToKeycloak(UserKeycloak user, 
+                                              KeycloakSettings keycloakSettings, 
+                                              HttpClient http, 
+                                              CancellationToken cancellationToken)
     {
 
-        var userRequest = new HttpRequestMessage(HttpMethod.Post, options.Value.UserEndpoint)
+        var userRequest = new HttpRequestMessage(HttpMethod.Post, keycloakSettings.UserEndpoint)
         {
             Content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json")
         };
@@ -73,22 +77,26 @@ public class UserRepository(ECommerceDbContext dbContext, IOptions<KeycloakSetti
         return Guid.Parse(locationHeader[(locationHeader.LastIndexOf('/') + 1)..]);
     }
 
-    public async Task<string> GetUserAdminKeycloakToken(HttpClient http, CancellationToken cancellationToken)
+    public async Task<ErrorOr<string>> GetUserKeycloakToken(HttpClient http, KeycloakSettings keycloakSettings, CancellationToken cancellationToken)
     {
-        var keycloakSettings = options.Value;
-
         var tokenRequest = new HttpRequestMessage(HttpMethod.Post, keycloakSettings.TokenEndpoint)
         {
             Content = new FormUrlEncodedContent(
             [
                 new KeyValuePair<string, string>("client_id", "public-client"),
-                new KeyValuePair<string, string>("username", keycloakSettings.AdminUsername),
-                new KeyValuePair<string, string>("password", keycloakSettings.AdminPassword),
+                new KeyValuePair<string, string>("username", keycloakSettings.Username),
+                new KeyValuePair<string, string>("password", keycloakSettings.Password),
                 new KeyValuePair<string, string>("grant_type", "password")
             ])
         };
 
         var tokenResponse = await http.SendAsync(tokenRequest, cancellationToken);
+
+        if (!tokenResponse.IsSuccessStatusCode)
+        {
+            return DomainErrors.Generic(); 
+        }
+
         tokenResponse.EnsureSuccessStatusCode();
 
         using var tokenJson = JsonDocument.Parse(await tokenResponse.Content.ReadAsStringAsync(cancellationToken));
@@ -96,9 +104,13 @@ public class UserRepository(ECommerceDbContext dbContext, IOptions<KeycloakSetti
         return token;
     }
 
-    public async Task AssignRoleToKeycloakUser(Guid userKeycloakId, string role, HttpClient http, CancellationToken cancellationToken)
+    public async Task AssignRoleToKeycloakUser(Guid userKeycloakId, 
+                                               string role, 
+                                               HttpClient http,
+                                               KeycloakSettings keycloakSettings,
+                                               CancellationToken cancellationToken)
     {
-        var roleResponse = await http.GetAsync($"{options.Value.UserApiBase}/roles/{role}", cancellationToken);
+        var roleResponse = await http.GetAsync($"{keycloakSettings.UserApiBase}/roles/{role}", cancellationToken);
         roleResponse.EnsureSuccessStatusCode();
 
         var roleJsonString = await roleResponse.Content.ReadAsStringAsync(cancellationToken);
@@ -116,17 +128,12 @@ public class UserRepository(ECommerceDbContext dbContext, IOptions<KeycloakSetti
 
         var roleAssignRequest = new HttpRequestMessage(
             HttpMethod.Post,
-            $"{options.Value.UserApiBase}/users/{userKeycloakId}/role-mappings/realm")
+            $"{keycloakSettings.UserApiBase}/users/{userKeycloakId}/role-mappings/realm")
         {
             Content = new StringContent(JsonSerializer.Serialize(roleToAdd), Encoding.UTF8, "application/json")
         };
 
         var assignResponse = await http.SendAsync(roleAssignRequest, cancellationToken);
         assignResponse.EnsureSuccessStatusCode();
-    }
-
-    public Task<string> AuthenticateUser(string username, string password, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
     }
 }

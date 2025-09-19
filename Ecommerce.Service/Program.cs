@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
-    .AddApplicationDependency()
+    .AddApplicationDependency(builder.Configuration)
     .AddInfrastructureDependency(builder.Configuration);
 
 var role = builder.Configuration["Authentication:RoleAccess"];
@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.RequireHttpsMetadata = false;
         options.Audience = builder.Configuration["Authentication:Audience"];
         options.MetadataAddress = builder.Configuration["Authentication:MetadataAddress"]!;
-        //options.Authority = "http://keycloak:8080/realms/ecommerce";
+        options.Authority = builder.Configuration["Authentication:Authority"];
         options.TokenValidationParameters = new()
         {
             ValidateIssuer = true,
@@ -51,6 +51,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -67,10 +78,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAngular");
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -12,11 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommerce.Service.Controllers;
 
 [Route("api/[controller]")]
-[Authorize(Roles = "Manager")]
 public class ProductController(ISender sender) : ApiController
 {
     [HttpGet()]
-    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetProducts([FromQuery] PaginationRequest request, CancellationToken cancellationToken)
     {
@@ -25,7 +23,6 @@ public class ProductController(ISender sender) : ApiController
     }
 
     [HttpGet("{productId}")]
-    [Authorize(Roles = "Customer")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetProduct(Guid productId, CancellationToken cancellationToken)
@@ -35,6 +32,7 @@ public class ProductController(ISender sender) : ApiController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateProduct([FromBody] ProductCreateRequest request, 
@@ -46,6 +44,7 @@ public class ProductController(ISender sender) : ApiController
     }
 
     [HttpPut("{productId:guid}")]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateProduct(Guid productId,
                                             [FromBody] ProductUpdateRequest updateRequest,
@@ -56,6 +55,7 @@ public class ProductController(ISender sender) : ApiController
     }
 
     [HttpDelete("{productId:guid}")]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteProduct(Guid productId, CancellationToken cancellationToken)

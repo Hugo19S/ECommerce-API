@@ -4,6 +4,7 @@ using Ecommerce.Application.Users.Commands.DeleteUser;
 using Ecommerce.Application.Users.Commands.UpdateUser;
 using Ecommerce.Application.Users.Queries.GetUser;
 using Ecommerce.Application.Users.Queries.GetUsers;
+using Ecommerce.Application.Users.Queries.UserLogin;
 using Ecommerce.Service.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -82,5 +83,15 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
         var deletedUserOr = await sender.Send(new DeleteUserCommand(userId), cancellationToken);
 
         return deletedUserOr.Match(v => NoContent(), Problem);
+    }
+
+    [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> Login([FromBody] UserLoginRequest credentials, CancellationToken cancellationToken)
+    {
+        var userDto = await sender.Send(new UserLogin(credentials.Email, credentials.Password), cancellationToken);
+
+        return userDto.Match(v => Ok(mapper.Map<UserTokenLoginRequest>(v)), Problem);
     }
 }

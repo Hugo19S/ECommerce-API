@@ -39,6 +39,7 @@ namespace Ecommerce.Service.Profiles
 
             /* User Profile */
             CreateMap<User, UserResponse>();
+            CreateMap<LoginDto, UserTokenLoginRequest>();
         }
     }
 }

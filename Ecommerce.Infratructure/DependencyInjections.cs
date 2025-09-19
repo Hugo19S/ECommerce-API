@@ -17,7 +17,6 @@ public static class DependencyInjections
     {
         services.AddDbContext<ECommerceDbContext>(option => 
             option.UseNpgsql(configuration.GetConnectionString("ECommerce1")));
-        services.Configure<KeycloakSettings>(configuration.GetSection("Keycloak"));
         services.AddScoped<ICartRepository, CartRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IMakerRepostory, MakerRepository>();

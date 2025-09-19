@@ -5,7 +5,6 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
     <ProjectGuid>4504e646-b3c8-4498-b912-cd6e5cb1316c</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>ecommerce.service</DockerServiceName>
   </PropertyGroup>

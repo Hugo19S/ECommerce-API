@@ -5,8 +5,8 @@ using Ecommerce.Domain.AppSettings;
 using Ecommerce.Domain.Entities;
 using ErrorOr;
 using MediatR;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
 
 namespace Ecommerce.Application.Users.Commands.CreateUser;
 
@@ -19,7 +19,8 @@ public record CreateUserCommand(string FirstName,
 
 public class CreateUserCommandHandler(IUserRepository userRepository,
                                       ICartRepository cartRepository,
-                                      IUnitOfWork unitOfWork) 
+                                      IUnitOfWork unitOfWork,
+                                      IOptions<KeycloakSettings> options)
     : IRequestHandler<CreateUserCommand, ErrorOr<Created>>
 {
     public async Task<ErrorOr<Created>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -71,12 +72,12 @@ public class CreateUserCommandHandler(IUserRepository userRepository,
         await userRepository.AddUser(createUser, cancellationToken);
         await cartRepository.CreateUserCart(cart, cancellationToken);
 
-        var token = await userRepository.GetUserAdminKeycloakToken(http, cancellationToken);
-        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var token = await userRepository.GetUserKeycloakToken(http, options.Value, cancellationToken);
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
 
-        var userKeycloakId = await userRepository.AddUserToKeycloak(createUserKeycloak, http, cancellationToken);
+        var userKeycloakId = await userRepository.AddUserToKeycloak(createUserKeycloak, options.Value, http, cancellationToken);
 
-        await userRepository.AssignRoleToKeycloakUser(userKeycloakId, "Customer", http, cancellationToken);
+        await userRepository.AssignRoleToKeycloakUser(userKeycloakId, "Customer", http, options.Value, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Created();
