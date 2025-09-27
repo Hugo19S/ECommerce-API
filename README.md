@@ -1,10 +1,22 @@
+
+# ECOMMERCE-API
+
+*Empowering Commerce Through Seamless, Secure Innovation*
+
+![last commit](https://img.shields.io/github/last-commit/Hugo19S/ECommerce-API)
+![C#](https://img.shields.io/badge/C%23-99.7%25-239120?style=flat&logo=c-sharp&logoColor=white)
+![languages](https://img.shields.io/github/languages/count/Hugo19S/ECommerce-API)
 ![.NET 8](https://img.shields.io/badge/.NET-8.0-blueviolet)
-![Keycloak](https://img.shields.io/badge/Auth-Keycloak-red)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 
-# 🛒 ECommerce-API | Backend em .NET 8 com DDD, Keycloak e Docker
+---
 
-Backend de um sistema de e-commerce, com autenticação segura via Keycloak, arquitetura baseada em DDD, e serviços conteinerizados com Docker.
+*Built with the tools and technologies:*
+
+![JSON](https://img.shields.io/badge/JSON-000000?style=flat&logo=json&logoColor=white)
+![Markdown](https://img.shields.io/badge/Markdown-000000?style=flat&logo=markdown&logoColor=white)
+![Keycloak](https://img.shields.io/badge/Keycloak-354052?style=flat&logo=keycloak&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+![NuGet](https://img.shields.io/badge/NuGet-004880?style=flat&logo=nuget&logoColor=white)
 
 ---
 
@@ -15,99 +27,87 @@ Backend de um sistema de e-commerce, com autenticação segura via Keycloak, arq
 
 ---
 
-## 📚 Índice
+## 📚 Table of Content
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Testing](#testing)
 
-- [🚀 Funcionalidades](#-funcionalidades)
-- [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
-- [⚙️ Como Executar Localmente](#️-como-executar-localmente)
-- [📐 Arquitetura](#-arquitetura)
-- [🧪 Testes](#-testes)
-- [🔐 Autenticação com Keycloak](#-autenticação-com-keycloak)
-- [👨‍💻 Autor](#-autor)
+ ---
+## Overview
+ECommerce-API is a powerful backend framework tailored for building scalable and secure e-commerce platforms. It emphasizes modular architecture, containerized deployment, and robust testing to streamline development and maintenance.
 
----
+#### Why ECommerce-API?
 
-## 🚀 Funcionalidades
+This project helps developers create reliable, maintainable online store backends with features like:
 
-- 📦 CRUD de produtos, categorias, fabricantes e vendedores
-- 🧾 Gestão de carrinho de compras e pedidos
-- 💳 Gestão de pagamentos e histórico de status
-- 🧑 Gestão de utilizadores
-- 🔐 Autenticação e autorização com Keycloak (roles via JWT)
-- ⚡ Cache em memória para acelerar as respostas
-- 📄 Paginação em listagens de usuários e produtos
-- 🔬 Testes unitários com xUnit e Moq
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-- **.NET 8**
-- **Entity Framework Core**
-- **PostgreSQL**
-- **Keycloak**
-- **Docker & Docker Compose**
-- **xUnit + Moq**
+- 🧩 **Modular Design**: Supports domain-driven development for scalable and organized codebases.
+- 🐳 **Containerized Deployment**: Uses Docker Compose for consistent environments across development, testing, and production.
+- 🔐 **Secure Authentication**: Integrates Keycloak for seamless user authentication and role management.
+- 🧪 **Comprehensive Testing**: Includes extensive unit tests to ensure application robustness.
+- ⚙️ **Config & Seeding**: Facilitates reliable data management with detailed configuration and seed data.
 
 ---
 
-## ⚙️ Como Executar Localmente
+## Getting Started
 
-> Certifique-se de ter o Docker e o .NET SDK instalados.
+### Prerequisites
+This project requires the following dependencies:
 
+- **Programming Language**: CSharp
+- **Package Manager**: Nuget
+- **Container Runtime**: Docker
+
+### Installation
+Build ECommerce-API from the source and install dependencies:
+
+#### 1. Clone the repository:
 ```bash
-# 1. Clone o repositório
-git clone https://github.com/Hugo19S/ECommerce-API.git
-cd ECommerce-API
-
-# 2. Levante os serviços com Docker Compose
-docker-compose up --build
-
-# 3. A API estará disponível em:
-http://localhost:5001
-
-# 4. O painel do keycloak estará disponível em:
-http://localhost:8080
-
+git clone https://github.com/Hugo19S/ECommerce-API
 ```
 
----
+#### 2. Navigate to the project directory:
+```bash
+cd ECommerce-API
+```
 
-## 📐 Arquitetura
+#### 3. Install the dependencies:
+**Using** docker:
+```bash
+docker build -t Hugo19S/ECommerce-API .
+```
 
-O projeto está dividido nas seguintes camadas:
+**Using** nuget:
+```bash
+dotnet restore
+```
 
-ECommerce.Domain → Entidades, ValueObjects. Contém também tabelas dedicadas para rastrear preços e descontos historicamente.
+### Usage
+Run the project with:
 
-ECommerce.Application → Casos de uso da aplicação e interfaces dos repositórios.
+**Using** docker:
+```bash
+docker run -it {image_name}
+```
 
-ECommerce.Infrastructure → 
-  - Configurações das entidades e suas relações
-  - Implementações de repositórios
-  - Seeders e migrações
-  - Lógica de cache e autenticação (Keycloak)
+**Using** nuget:
+```bash
+dotnet run
+```
 
-ECommerce.API → Controllers, configuração de middlewares e endpoints.
+### Testing
+Ecommerce-api uses the {test_framework} test framework. Run the test suite with:
 
-📦 A arquitetura segue os princípios de Domain-Driven Design (DDD) e utiliza injeção de dependência nativa do .NET.
+**Using** docker:
+```bash
+echo 'INSERT-TEST-COMMAND-HERE'
+```
 
----
-
-## 🧪 Testes
-
-> Execute os testes com o seguinte comando:
-cd .\ECommerce-API\Ecommerce.Test\
+**Using** nuget:
+```bash
 dotnet test
+```
 
-Utilizei xUnit com Moq para testar os principais serviços da camada de aplicação.
-
----
-
-## 🔐 Autenticação com Keycloak
-A autenticação é feita via JWT, e o Keycloak valida os tokens e roles de acesso. Os usuários são divididos por papéis, e os endpoints têm proteção via [Authorize(Roles = "Admin")], por exemplo.
-
----
-
-## 👨‍💻 Autor
-Feito com ❤️ por Hugo Furtado
-🔗 [Conecte-se comigo no LinkedIn](https://www.linkedin.com/in/hugo-furtado)
+[⬆ Return](#-table-of-content)
